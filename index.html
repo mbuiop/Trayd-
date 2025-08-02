@@ -2,319 +2,423 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پلتفرم تحلیل تکنیکال</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>پلتفرم تبلیغ سایت - سیگنال ارز دیجیتال</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f0f5ff 0%, #e6f0ff 100%);
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: #ffffff;
+            color: #333;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
+
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            border: 1px solid #e0ebff;
+            margin-bottom: 50px;
         }
-        
+
         .header h1 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            font-weight: 700;
-            line-height: 1.5;
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
-        
-        .button-grid {
+
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .button-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 800px;
             width: 100%;
+            padding: 0 20px;
         }
-        
-        .grid-item {
+
+        .modern-button {
             position: relative;
-            height: 110px;
-            perspective: 800px;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        .button-3d {
-            display: block;
-            width: 100%;
-            height: 100%;
-            background: #2c3e50;
+            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
             border: none;
+            border-radius: 20px;
+            padding: 20px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffffff;
             cursor: pointer;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .button-3d:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
-            z-index: 1;
-        }
-        
-        .button-3d:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a2530 0%, #2c3e50 100%);
-            transform: translateZ(-15px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .button-3d:hover {
-            transform: translateZ(8px);
-        }
-        
-        .button-3d:active {
-            transform: translateZ(4px);
-        }
-        
-        .button-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            text-decoration: none;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 2;
-            color: white;
+            min-height: 80px;
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.3),
+                -8px -8px 16px rgba(255, 255, 255, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
-        
-        .button-content i {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            color: #3498db;
-            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+
+        .modern-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
-        
-        .button-content h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+        .modern-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                12px 12px 24px rgba(0, 0, 0, 0.4),
+                -12px -12px 24px rgba(255, 255, 255, 0.15),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
         }
-        
-        .modal {
-            display: flex; /* تغییر: همیشه نمایش داده شود */
+
+        .modern-button:hover::before {
+            left: 100%;
+        }
+
+        .modern-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.3),
+                -4px -4px 8px rgba(255, 255, 255, 0.1),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-frame {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
-            align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
+            align-items: center;
         }
-        
-        .modal-content {
+
+        .content-modal {
             background: white;
+            padding: 0;
             border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            width: 95%;
+            height: 95%;
             position: relative;
             overflow: hidden;
-            animation: modalIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
+
         .modal-header {
-            background: linear-gradient(90deg, #3498db, #2c3e50);
+            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
             color: white;
-            padding: 15px;
-            text-align: center;
-            position: relative;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        
-        .modal-header h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-size: 1.8rem;
+
+        .close-btn {
+            background: #ff4757;
             color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: none;
             width: 35px;
             height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            transition: all 0.3s ease;
         }
-        
-        .close-modal:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(90deg);
+
+        .close-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
         }
-        
-        .modal-body {
-            padding: 20px;
-            color: #2c3e50;
-            line-height: 1.8;
-            font-size: 1rem;
-            max-height: 60vh;
-            overflow-y: auto;
+
+        .content-iframe {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+            background: white;
         }
-        
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.8) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+
+        .hidden-indicator {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #ff4757;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 1001;
+            display: none;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+            transition: all 0.3s ease;
         }
-        
-        @media (max-width: 350px) {
-            .button-grid {
-                grid-template-columns: 1fr;
+
+        .hidden-indicator:hover {
+            background: #ff3742;
+            transform: scale(1.05);
+        }
+
+        /* تنظیمات موبایل حرفه‌ای */
+        @media (max-width: 768px) {
+            .header {
+                margin-bottom: 30px;
+                padding: 0 15px;
             }
             
             .header h1 {
-                font-size: 1.3rem;
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .button-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 15px;
+            }
+
+            .modern-button {
+                min-height: 70px;
+                padding: 18px 25px;
+                font-size: 1rem;
+                border-radius: 15px;
+                touch-action: manipulation;
+            }
+
+            .content-modal {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .modal-header {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .close-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
+            }
+
+            .hidden-indicator {
+                top: 15px;
+                left: 15px;
+                padding: 8px 12px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .modern-button {
+                min-height: 65px;
+                padding: 15px 20px;
+                font-size: 0.95rem;
+            }
+
+            .button-container {
+                gap: 15px;
+                padding: 0 10px;
+            }
+
+            .modal-header {
+                padding: 10px 12px;
+            }
+
+            .close-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+        }
+
+        /* تنظیمات لمسی */
+        .modern-button {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .modern-button:active {
+            transform: scale(0.98);
+        }
+
+        /* تنظیمات اسکرول */
+        .content-iframe {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* حالت افقی موبایل */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+            }
+
+            .button-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .modern-button {
+                min-height: 55px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="modal">
-        <div class="modal-content">
+    <div class="header">
+        <h1>پلتفرم تبلیغ سایت</h1>
+        <p>سیگنال ارز دیجیتال خوش آمدید</p>
+    </div>
+
+    <div class="button-container">
+        <button class="modern-button" onclick="loadPage('sig.html', 'سیگنال ها')">سیگنال ها</button>
+        <button class="modern-button" onclick="loadPage('NMO.html', 'درباره اندیکاتور ها')">درباره اندیکاتور ها</button>
+        <button class="modern-button" onclick="loadPage('vc.html', 'ثبت سایت')">ثبت سایت</button>
+        <button class="modern-button" onclick="loadPage('dar.html', 'درباره ارز دیجیتال')">درباره ارز دیجیتال</button>
+        <button class="modern-button" onclick="loadPage('say.html', 'سایت های موجود')">سایت های موجود</button>
+    </div>
+
+    <div id="contentFrame" class="content-frame">
+        <div class="content-modal">
             <div class="modal-header">
-                <span class="close-modal">&times;</span>
-                <h2>پیام مدیریت</h2>
+                <h3 id="modalTitle">محتوا</h3>
+                <button class="close-btn" onclick="closeContent()">×</button>
             </div>
-            <div class="modal-body">
-                <!-- محتوای پیام مدیریت در اینجا بارگیری میشود -->
-            </div>
+            <iframe id="contentIframe" class="content-iframe"></iframe>
         </div>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>به پلتفرم تبلیغ سایت و تحلیل تکنیکال و سیگنال‌های رایگان خوش آمدید</h1>
-        </div>
-        
-        <div class="button-grid">
-            <div class="grid-item">
-                <a href="NMO.html" class="button-3d">
-                    <div class="button-content">
-                        <i class="fas fa-chart-line"></i>
-                        <h3>تحلیل اندیکاتور </h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="grid-item">
-                <a href="sig.html" class="button-3d">
-                    <div class="button-content">
-                        <i class="fas fa-bullhorn"></i>
-                        <h3>سیگنال‌ها</h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="grid-item">
-                <a href="say.html" class="button-3d">
-                    <div class="button-content">
-                        <i class="fas fa-list"></i>
-                        <h3>لیست سایت‌ها</h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="grid-item">
-                <a href="vc.html" class="button-3d">
-                    <div class="button-content">
-                        <i class="fas fa-paper-plane"></i>
-                        <h3>ارسال سایت</h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="grid-item">
-                <a href="dar.html" class="button-3d">
-                    <div class="button-content">
-                        <i class="fas fa-info-circle"></i>
-                        <h3>درباره ارز دیجتال</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
+    <div id="hiddenIndicator" class="hidden-indicator" onclick="showHiddenContent()">
+        مدیریت × 
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // بارگیری محتوای mode.html برای همه کاربران
-            fetch('mode.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.querySelector('.modal-body').innerHTML = html;
+        function loadPage(url, title) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('contentIframe').src = url;
+            document.getElementById('contentFrame').style.display = 'flex';
+        }
+
+        function closeContent() {
+            document.getElementById('contentFrame').style.display = 'none';
+            document.getElementById('contentIframe').src = '';
+        }
+
+        function showHiddenContent() {
+            loadPage('mode.html', 'مدیریت سیستم');
+        }
+
+        // تشخیص خودکار وجود فایل mode.html
+        function checkForModeFile() {
+            fetch('mode.html', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('hiddenIndicator').style.display = 'block';
+                    }
                 })
-                .catch(error => {
-                    console.error('خطا در بارگیری mode.html:', error);
-                    document.querySelector('.modal-body').innerHTML = '<p>خطا در بارگیری پیام مدیریت</p>';
+                .catch(() => {
+                    // فایل وجود ندارد - هیچ کاری نکن
                 });
-            
-            // اضافه کردن قابلیت بستن مدال
-            const closeBtn = document.querySelector('.close-modal');
-            const modal = document.querySelector('.modal');
-            
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-            
-            window.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
+        }
+
+        // بستن مودال با کلیک روی پس زمینه
+        document.getElementById('contentFrame').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContent();
+            }
         });
+
+        // بستن با کلید ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContent();
+            }
+        });
+
+        // بهبود عملکرد لمسی موبایل
+        function setupMobileOptimizations() {
+            // غیرفعال کردن زوم دابل کلیک
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+
+            // بهبود اسکرول موبایل
+            document.body.style.webkitOverflowScrolling = 'touch';
+            
+            // تشخیص تغییر جهت صفحه
+            window.addEventListener('orientationchange', function() {
+                setTimeout(function() {
+                    window.scrollTo(0, 0);
+                }, 100);
+            });
+        }
+
+        // بررسی خودکار فایل mode.html هنگام لود صفحه
+        window.addEventListener('load', function() {
+            checkForModeFile();
+            
+            // اجرای تنظیمات موبایل
+            if ('ontouchstart' in window) {
+                setupMobileOptimizations();
+            }
+        });
+
+        // بررسی مجدد هر 5 ثانیه
+        setInterval(checkForModeFile, 5000);
     </script>
 </body>
 </html>
