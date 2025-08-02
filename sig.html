@@ -1,1 +1,310 @@
-سیگنال ها در اسراع وقت گذاشته می شود با تشکر از کاربران
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیگنال‌های ارز دیجیتال</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .signal-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #334155;
+            transition: transform 0.2s ease;
+        }
+        
+        .signal-card:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .currency-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+        
+        .leverage {
+            background: #f97316;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .card-value {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #334155;
+        }
+        
+        .value-label {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+        
+        .value {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .profit {
+            color: #22c55e;
+        }
+        
+        .loss {
+            color: #ef4444;
+        }
+        
+        @media (max-width: 768px) {
+            .signal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="signal-grid">
+            <!-- سیگنال 1 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Bitcoin (BTC)</span>
+                    <span class="leverage">10x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$63,420</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$68,500</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$60,100</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 2 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Ethereum (ETH)</span>
+                    <span class="leverage">5x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$3,420</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$3,750</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$3,250</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 3 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Solana (SOL)</span>
+                    <span class="leverage">15x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$142.50</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$165.00</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$130.00</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 4 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Cardano (ADA)</span>
+                    <span class="leverage">8x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$0.48</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$0.55</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$0.42</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 5 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Dogecoin (DOGE)</span>
+                    <span class="leverage">20x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$0.128</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$0.150</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$0.110</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 6 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">XRP</span>
+                    <span class="leverage">12x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$0.52</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$0.60</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$0.48</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 7 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Polkadot (DOT)</span>
+                    <span class="leverage">7x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$6.80</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$7.50</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$6.30</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 8 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Chainlink (LINK)</span>
+                    <span class="leverage">10x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$14.25</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$16.00</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$13.00</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 9 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Avalanche (AVAX)</span>
+                    <span class="leverage">15x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$35.60</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$42.00</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$32.00</span>
+                </div>
+            </div>
+            
+            <!-- سیگنال 10 -->
+            <div class="signal-card">
+                <div class="card-header">
+                    <span class="currency-name">Polygon (MATIC)</span>
+                    <span class="leverage">10x</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">قیمت ورود:</span>
+                    <span class="value">$0.75</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد سود:</span>
+                    <span class="value profit">$0.85</span>
+                </div>
+                <div class="card-value">
+                    <span class="value-label">حد ضرر:</span>
+                    <span class="value loss">$0.68</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
