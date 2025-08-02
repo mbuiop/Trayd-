@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلتفرم تحلیل تکنیکال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f5ff 0%, #e6f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border: 1px solid #e0ebff;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 15px;
+            width: 100%;
+        }
+        
+        .grid-item {
+            position: relative;
+            height: 110px;
+            perspective: 800px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .button-3d {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .button-3d:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            z-index: 1;
+        }
+        
+        .button-3d:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2530 0%, #2c3e50 100%);
+            transform: translateZ(-15px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .button-3d:hover {
+            transform: translateZ(8px);
+        }
+        
+        .button-3d:active {
+            transform: translateZ(4px);
+        }
+        
+        .button-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            color: white;
+        }
+        
+        .button-content i {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+        
+        .button-content h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            animation: modalIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .modal-header {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 20px;
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.8) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        @media (max-width: 350px) {
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>به پلتفرم تبلیغ سایت و تحلیل تکنیکال و سیگنال‌های رایگان خوش آمدید</h1>
+        </div>
+        
+        <div class="button-grid">
+            <div class="grid-item">
+                <a href="tah.html" class="button-3d">
+                    <div class="button-content">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>تحلیل ارز</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="sig.html" class="button-3d">
+                    <div class="button-content">
+                        <i class="fas fa-bullhorn"></i>
+                        <h3>سیگنال‌ها</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="say.html" class="button-3d">
+                    <div class="button-content">
+                        <i class="fas fa-list"></i>
+                        <h3>لیست سایت‌ها</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="#" class="button-3d">
+                    <div class="button-content">
+                        <i class="fas fa-paper-plane"></i>
+                        <h3>ارسال سایت</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="dar.html" class="button-3d">
+                    <div class="button-content">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>درباره</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for modr.html content -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal">&times;</span>
+                <h2>پیام مدیریت</h2>
+            </div>
+            <div class="modal-body">
+                <p>به کاربران عزیز خوش آمد می‌گوییم. این پیام از فایل modr.html بارگذاری شده است.</p>
+                <p>سیستم جدید تحلیل بازار از این هفته راه‌اندازی خواهد شد. لطفاً برای اطلاعات بیشتر بخش تحلیل ارز را دنبال کنید.</p>
+                <p>سیگنال‌های روزانه به صورت رایگان در دسترس خواهند بود.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('infoModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const firstVisit = localStorage.getItem('firstVisit');
+            
+            // Show modal only on first visit
+            if (!firstVisit) {
+                // شبیه‌سازی بارگذاری محتوای modr.html
+                setTimeout(() => {
+                    modal.style.display = 'flex';
+                    localStorage.setItem('firstVisit', 'true');
+                }, 1000);
+            }
+            
+            // Close modal
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

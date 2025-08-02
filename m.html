@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت - سامانه ثبت سایت‌ها</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2c3e50, #1a2a6c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            color: #1a2a6c;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .admin-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            color: #1a2a6c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a2a6c;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        
+        .admin-login {
+            margin-top: 20px;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .password-input {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .password-input input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .password-input button {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .password-input button:hover {
+            background: #0d1a4d;
+        }
+        
+        .error-message {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .sites-list {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .site-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #1a2a6c;
+        }
+        
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .site-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #1a2a6c;
+        }
+        
+        .site-status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .status-approved {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .status-rejected {
+            background: #f44336;
+            color: white;
+        }
+        
+        .site-url a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        
+        .site-url a:hover {
+            text-decoration: underline;
+        }
+        
+        .site-description {
+            margin: 15px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .site-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .approve-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .reject-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-update {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .status-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .status-error {
+            background: #f44336;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .admin-section {
+                padding: 20px;
+            }
+            
+            .admin-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>پنل مدیریت سامانه ثبت سایت‌ها</h1>
+            <p>فقط مدیر سیستم مجاز به دسترسی به این صفحه می‌باشد</p>
+        </header>
+        
+        <section class="admin-section">
+            <h2 class="section-title">ورود به پنل مدیریت</h2>
+            
+            <div class="admin-login" id="loginSection">
+                <p>برای دسترسی به پنل مدیریت، لطفاً رمز عبور را وارد کنید:</p>
+                <div class="password-input">
+                    <input type="password" id="adminPassword" placeholder="رمز عبور مدیریت">
+                    <button id="loginBtn"><i class="fas fa-sign-in-alt"></i> ورود به پنل</button>
+                </div>
+                <div class="error-message" id="loginError"></div>
+            </div>
+            
+            <div id="adminPanel" style="display: none;">
+                <div class="sites-list" id="sitesList">
+                    <!-- سایت‌ها اینجا نمایش داده می‌شوند -->
+                </div>
+                <div class="status-update" id="statusMessage"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // کلید ذخیره‌سازی در localStorage
+        const SITES_KEY = 'submitted_sites';
+        
+        // رمز عبور مدیریت (می‌توانید آن را تغییر دهید)
+        const ADMIN_PASSWORD = 'admin123';
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const adminPassword = document.getElementById('adminPassword');
+        const loginError = document.getElementById('loginError');
+        const loginSection = document.getElementById('loginSection');
+        const adminPanel = document.getElementById('adminPanel');
+        const sitesList = document.getElementById('sitesList');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // ورود به پنل مدیریت
+        loginBtn.addEventListener('click', () => {
+            const password = adminPassword.value;
+            
+            if (password === ADMIN_PASSWORD) {
+                loginSection.style.display = 'none';
+                adminPanel.style.display = 'block';
+                sitesList.style.display = 'block';
+                renderSitesList();
+            } else {
+                loginError.textContent = 'رمز عبور اشتباه است!';
+                loginError.style.display = 'block';
+            }
+        });
+        
+        // رندر لیست سایت‌ها برای مدیریت
+        function renderSitesList() {
+            const sites = JSON.parse(localStorage.getItem(SITES_KEY)) || [];
+            
+            if (sites.length === 0) {
+                sitesList.innerHTML = '<p class="no-sites">هیچ سایتی برای بررسی وجود ندارد.</p>';
+                return;
+            }
+            
+            sitesList.innerHTML = '';
+            
+            // مرتب‌سازی سایت‌ها بر اساس زمان ثبت (جدیدترین اول)
+            sites.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            sites.forEach(site => {
+                const siteItem = document.createElement('div');
+                siteItem.className = 'site-item';
+                
+                let statusText, statusClass;
+                switch (site.status) {
+                    case 'pending':
+                        statusText = 'در انتظار بررسی';
+                        statusClass = 'status-pending';
+                        break;
+                    case 'approved':
+                        statusText = 'تایید شده';
+                        statusClass = 'status-approved';
+                        break;
+                    case 'rejected':
+                        statusText = 'رد شده';
+                        statusClass = 'status-rejected';
+                        break;
+                }
+                
+                // تبدیل تاریخ به فرمت قابل خواندن
+                const date = new Date(site.timestamp);
+                const formattedDate = date.toLocaleString('fa-IR');
+                
+                siteItem.innerHTML = `
+                    <div class="site-header">
+                        <div class="site-name">${site.name}</div>
+                        <div class="site-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="site-url">
+                        <a href="${site.url}" target="_blank">${site.url}</a>
+                    </div>
+                    <div class="site-description">
+                        ${site.description}
+                    </div>
+                    <div class="site-meta">
+                        <div class="site-id">شناسه: ${site.id}</div>
+                        <div class="site-date">تاریخ ثبت: ${formattedDate}</div>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="action-btn approve-btn" data-id="${site.id}">
+                            <i class="fas fa-check"></i> تایید
+                        </button>
+                        <button class="action-btn reject-btn" data-id="${site.id}">
+                            <i class="fas fa-times"></i> رد
+                        </button>
+                    </div>
+                `;
+                
+                sitesList.appendChild(siteItem);
+            });
+            
+            // افزودن رویداد به دکمه‌های تایید و رد
+            document.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', () => updateSiteStatus(btn.dataset.id, 'approved'));
+            });
+            
+            document.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', () => updateSiteStatus(btn.dataset.id, 'rejected'));
+            });
+        }
+        
+        // به‌روزرسانی وضعیت سایت
+        function updateSiteStatus(siteId, status) {
+            const sites = JSON.parse(localStorage.getItem(SITES_KEY)) || [];
+            const siteIndex = sites.findIndex(site => site.id == siteId);
+            
+            if (siteIndex !== -1) {
+                sites[siteIndex].status = status;
+                localStorage.setItem(SITES_KEY, JSON.stringify(sites));
+                
+                // نمایش پیام موفقیت
+                statusMessage.textContent = status === 'approved' 
+                    ? 'سایت با موفقیت تایید شد!' 
+                    : 'سایت رد شد!';
+                
+                statusMessage.className = 'status-update status-success';
+                statusMessage.style.display = 'block';
+                
+                // مخفی کردن پیام پس از 3 ثانیه
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+                
+                // به‌روزرسانی لیست سایت‌ها
+                renderSitesList();
+            }
+        }
+        
+        // مقداردهی اولیه
+        document.addEventListener('DOMContentLoaded', () => {
+            loginError.style.display = 'none';
+            statusMessage.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
