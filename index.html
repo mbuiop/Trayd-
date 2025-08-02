@@ -275,49 +275,49 @@
             </div>
         </div>
     </div>
-    
-    <!-- Modal for modr.html content -->
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close-modal">&times;</span>
-                <h2>پیام مدیریت</h2>
-            </div>
-            <div class="modal-body">
-                <p>به پلتفرم تبلیغات سایت و سیگنال و تحلیل ارز دیجیتال خوش  امدید.</p>
-                <p>این اپلیکیشن سایت های شمارا ریگان تبلیغ میکنه و سیگنال های ارز دیجیتال را در اختیار شمارقرار می دهد.</p>
-                <p>لطفا در انجام معاملات خود ریسگ را مدریت کنید و اهرم را بیشتر از 10بالا نبرید با تشکر از شما کاربران  محترم.</p>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // Modal functionality
+        // مسیر مخفی برای نمایش modr.html فقط با پارامتر خاص
         document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('infoModal');
-            const closeBtn = document.querySelector('.close-modal');
-            const firstVisit = localStorage.getItem('firstVisit');
+            const urlParams = new URLSearchParams(window.location.search);
+            const secretParam = urlParams.get('admin_key');
             
-            // Show modal only on first visit
-            if (!firstVisit) {
-                // شبیه‌سازی بارگذاری محتوای modr.html
-                setTimeout(() => {
-                    modal.style.display = 'flex';
-                    localStorage.setItem('firstVisit', 'true');
-                }, 1000);
+            if (secretParam === 'SECRET123') {
+                fetch('modr.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        const modal = document.createElement('div');
+                        modal.className = 'modal';
+                        modal.style.display = 'flex';
+                        modal.innerHTML = `
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="close-modal">&times;</span>
+                                    <h2>پیام مدیریت</h2>
+                                </div>
+                                <div class="modal-body">
+                                    ${html}
+                                </div>
+                            </div>
+                        `;
+                        
+                        document.body.appendChild(modal);
+                        
+                        const closeBtn = modal.querySelector('.close-modal');
+                        closeBtn.addEventListener('click', function() {
+                            modal.style.display = 'none';
+                        });
+                        
+                        window.addEventListener('click', function(event) {
+                            if (event.target === modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('خطا در بارگیری modr.html:', error);
+                    });
             }
-            
-            // Close modal
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
         });
     </script>
 </body>
