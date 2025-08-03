@@ -72,6 +72,8 @@
                 inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .modern-button::before {
@@ -98,7 +100,7 @@
         }
 
         .modern-button:active {
-            transform: translateY(1px);
+            transform: scale(0.98);
             box-shadow: 
                 4px 4px 8px rgba(0, 0, 0, 0.3),
                 -4px -4px 8px rgba(255, 255, 255, 0.1),
@@ -162,27 +164,7 @@
             height: calc(100% - 60px);
             border: none;
             background: white;
-        }
-
-        .hidden-indicator {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #ff4757;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            z-index: 1001;
-            display: none;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .hidden-indicator:hover {
-            background: #ff3742;
-            transform: scale(1.05);
+            -webkit-overflow-scrolling: touch;
         }
 
         .mode-display {
@@ -197,6 +179,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.6);
             display: none;
             border: 2px solid #dee2e6;
+            position: relative;
         }
 
         .mode-display h3 {
@@ -211,6 +194,30 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .mode-close-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
         }
 
         /* تنظیمات موبایل حرفه‌ای */
@@ -260,14 +267,6 @@
                 font-size: 22px;
             }
 
-            .hidden-indicator {
-                top: 15px;
-                left: 15px;
-                padding: 8px 12px;
-                font-size: 13px;
-                border-radius: 8px;
-            }
-
             .mode-display {
                 margin: 20px 10px;
                 padding: 15px;
@@ -314,21 +313,6 @@
             }
         }
 
-        /* تنظیمات لمسی */
-        .modern-button {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-
-        .modern-button:active {
-            transform: scale(0.98);
-        }
-
-        /* تنظیمات اسکرول */
-        .content-iframe {
-            -webkit-overflow-scrolling: touch;
-        }
-
         /* حالت افقی موبایل */
         @media (max-width: 768px) and (orientation: landscape) {
             .header {
@@ -371,6 +355,7 @@
 
     <!-- نمایش محتوای فایل mode.html -->
     <div id="modeDisplay" class="mode-display">
+        <button class="mode-close-btn" onclick="closeModeDisplay()">×</button>
         <h3>📋 مدیریت سیستم</h3>
         <div class="content" id="modeContent">
             <!-- محتوای فایل mode.html اینجا نمایش داده می‌شود -->
@@ -387,10 +372,6 @@
         </div>
     </div>
 
-    <div id="hiddenIndicator" class="hidden-indicator" onclick="showHiddenContent()">
-        مدیریت × 
-    </div>
-
     <script>
         function loadPage(url, title) {
             document.getElementById('modalTitle').textContent = title;
@@ -403,12 +384,34 @@
             document.getElementById('contentIframe').src = '';
         }
 
-        function showHiddenContent() {
-            loadPage('mode.html', 'مدیریت سیستم');
+        // بستن پیام مدیریت و ذخیره وضعیت
+        function closeModeDisplay() {
+            document.getElementById('modeDisplay').style.display = 'none';
+            // ذخیره در حافظه مرورگر که کاربر پیام را بسته
+            try {
+                sessionStorage.setItem('modeDisplayClosed', 'true');
+            } catch(e) {
+                // اگر sessionStorage در دسترس نباشد
+                window.modeDisplayClosed = true;
+            }
+        }
+
+        // بررسی آیا کاربر قبلاً پیام را بسته یا نه
+        function isModeClosed() {
+            try {
+                return sessionStorage.getItem('modeDisplayClosed') === 'true';
+            } catch(e) {
+                return window.modeDisplayClosed === true;
+            }
         }
 
         // تشخیص خودکار وجود فایل mode.html
         function checkForModeFile() {
+            // اگر کاربر قبلاً پیام را بسته، نشان نده
+            if (isModeClosed()) {
+                return;
+            }
+
             // روش‌های مختلف برای تمام مرورگرها
             const methods = [
                 // روش اول: HEAD request
@@ -432,7 +435,6 @@
                 methods[index]()
                     .then(response => {
                         if (response.ok || response.status === 206) {
-                            document.getElementById('hiddenIndicator').style.display = 'block';
                             loadModeContent(); // بارگذاری محتوا
                         } else {
                             tryMethod(index + 1);
@@ -449,7 +451,6 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200 || xhr.status === 0) {
-                            document.getElementById('hiddenIndicator').style.display = 'block';
                             loadModeContent();
                         }
                     }
@@ -488,24 +489,7 @@
             
             modeContent.innerHTML = content;
             modeDisplay.style.display = 'block';
-            
-            // نمایش نشانگر قرمز
-            document.getElementById('hiddenIndicator').style.display = 'block';
         }
-
-        // بستن مودال با کلیک روی پس زمینه
-        document.getElementById('contentFrame').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeContent();
-            }
-        });
-
-        // بستن با کلید ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeContent();
-            }
-        });
 
         // بهبود عملکرد لمسی موبایل
         function setupMobileOptimizations() {
@@ -530,6 +514,20 @@
             });
         }
 
+        // بستن مودال با کلیک روی پس زمینه
+        document.getElementById('contentFrame').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContent();
+            }
+        });
+
+        // بستن با کلید ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeContent();
+            }
+        });
+
         // بررسی خودکار فایل mode.html هنگام لود صفحه
         window.addEventListener('load', function() {
             checkForModeFile();
@@ -540,8 +538,12 @@
             }
         });
 
-        // بررسی مجدد هر 5 ثانیه
-        setInterval(checkForModeFile, 5000);
+        // بررسی مجدد هر 10 ثانیه (فقط اگر کاربر پیام را نبسته)
+        setInterval(function() {
+            if (!isModeClosed()) {
+                checkForModeFile();
+            }
+        }, 10000);
     </script>
 </body>
 </html>
