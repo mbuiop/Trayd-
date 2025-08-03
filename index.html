@@ -185,6 +185,34 @@
             transform: scale(1.05);
         }
 
+        .mode-display {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            display: none;
+            border: 2px solid #dee2e6;
+        }
+
+        .mode-display h3 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .mode-display .content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         /* تنظیمات موبایل حرفه‌ای */
         @media (max-width: 768px) {
             .header {
@@ -238,6 +266,20 @@
                 padding: 8px 12px;
                 font-size: 13px;
                 border-radius: 8px;
+            }
+
+            .mode-display {
+                margin: 20px 10px;
+                padding: 15px;
+            }
+
+            .mode-display h3 {
+                font-size: 1.1rem;
+            }
+
+            .mode-display .content {
+                padding: 12px;
+                font-size: 0.9rem;
             }
         }
 
@@ -327,6 +369,14 @@
         <button class="modern-button" onclick="loadPage('say.html', 'سایت های موجود')">سایت های موجود</button>
     </div>
 
+    <!-- نمایش محتوای فایل mode.html -->
+    <div id="modeDisplay" class="mode-display">
+        <h3>📋 مدیریت سیستم</h3>
+        <div class="content" id="modeContent">
+            <!-- محتوای فایل mode.html اینجا نمایش داده می‌شود -->
+        </div>
+    </div>
+
     <div id="contentFrame" class="content-frame">
         <div class="content-modal">
             <div class="modal-header">
@@ -359,15 +409,88 @@
 
         // تشخیص خودکار وجود فایل mode.html
         function checkForModeFile() {
-            fetch('mode.html', { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        document.getElementById('hiddenIndicator').style.display = 'block';
+            // روش‌های مختلف برای تمام مرورگرها
+            const methods = [
+                // روش اول: HEAD request
+                () => fetch('mode.html', { method: 'HEAD' }),
+                // روش دوم: GET request کوچک
+                () => fetch('mode.html', { 
+                    method: 'GET',
+                    headers: { 'Range': 'bytes=0-10' }
+                }),
+                // روش سوم: GET معمولی
+                () => fetch('mode.html')
+            ];
+
+            function tryMethod(index) {
+                if (index >= methods.length) {
+                    // اگر هیچ روشی کار نکرد، سعی کن با XMLHttpRequest
+                    tryWithXHR();
+                    return;
+                }
+
+                methods[index]()
+                    .then(response => {
+                        if (response.ok || response.status === 206) {
+                            document.getElementById('hiddenIndicator').style.display = 'block';
+                            loadModeContent(); // بارگذاری محتوا
+                        } else {
+                            tryMethod(index + 1);
+                        }
+                    })
+                    .catch(() => {
+                        tryMethod(index + 1);
+                    });
+            }
+
+            function tryWithXHR() {
+                const xhr = new XMLHttpRequest();
+                xhr.open('HEAD', 'mode.html', true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200 || xhr.status === 0) {
+                            document.getElementById('hiddenIndicator').style.display = 'block';
+                            loadModeContent();
+                        }
                     }
+                };
+                xhr.send();
+            }
+
+            tryMethod(0);
+        }
+
+        // بارگذاری محتوای فایل mode.html
+        function loadModeContent() {
+            fetch('mode.html')
+                .then(response => response.text())
+                .then(data => {
+                    // نمایش محتوا در صفحه اصلی
+                    displayModeContent(data);
                 })
                 .catch(() => {
-                    // فایل وجود ندارد - هیچ کاری نکن
+                    // سعی با XMLHttpRequest
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', 'mode.html', true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            displayModeContent(xhr.responseText);
+                        }
+                    };
+                    xhr.send();
                 });
+        }
+
+        // نمایش محتوای mode.html در صفحه
+        function displayModeContent(content) {
+            const modeContent = document.getElementById('modeContent');
+            const modeDisplay = document.getElementById('modeDisplay');
+            
+            modeContent.innerHTML = content;
+            modeDisplay.style.display = 'block';
+            
+            // نمایش نشانگر قرمز
+            document.getElementById('hiddenIndicator').style.display = 'block';
         }
 
         // بستن مودال با کلیک روی پس زمینه
