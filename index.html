@@ -107,6 +107,30 @@
                 inset 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        .button-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .button-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .content-frame {
             display: none;
             position: fixed;
@@ -373,16 +397,117 @@
     </div>
 
     <script>
+        // مدیریت تاریخچه مرورگر (بدون pushState)
+        let pageStack = [];
+        let isModalOpen = false;
+
         function loadPage(url, title) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('contentIframe').src = url;
-            document.getElementById('contentFrame').style.display = 'flex';
+            // اضافه کردن انیمیشن لودینگ
+            const button = event.target;
+            button.classList.add('button-loading');
+            
+            // تست وجود فایل قبل از نمایش
+            fetch(url, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // فایل موجود است
+                        setTimeout(() => {
+                            // اضافه کردن صفحه جدید به تاریخچه
+                            pageStack.push({
+                                url: url,
+                                title: title,
+                                timestamp: Date.now()
+                            });
+                            
+                            isModalOpen = true;
+                            document.getElementById('modalTitle').textContent = title;
+                            document.getElementById('contentIframe').src = url;
+                            document.getElementById('contentFrame').style.display = 'flex';
+                            
+                            // حذف انیمیشن لودینگ
+                            button.classList.remove('button-loading');
+                        }, 800);
+                    } else {
+                        // فایل موجود نیست
+                        setTimeout(() => {
+                            button.classList.remove('button-loading');
+                            alert('فایل ' + title + ' یافت نشد!');
+                        }, 500);
+                    }
+                })
+                .catch(() => {
+                    // خطا در دسترسی به فایل
+                    setTimeout(() => {
+                        button.classList.remove('button-loading');
+                        alert('خطا در بارگذاری ' + title);
+                    }, 500);
+                });
         }
 
         function closeContent() {
             document.getElementById('contentFrame').style.display = 'none';
             document.getElementById('contentIframe').src = '';
+            
+            // بازگشت به صفحه اصلی
+            pageStack = [];
+            isModalOpen = false;
         }
+
+        // مدیریت دکمه برگشت مرورگر با رویداد keydown
+        document.addEventListener('keydown', function(event) {
+            // تشخیص دکمه ESC یا برگشت
+            if (event.key === 'Escape' || event.keyCode === 27) {
+                handleBackNavigation();
+            }
+        });
+
+        // مدیریت حرکت برگشت
+        function handleBackNavigation() {
+            if (isModalOpen && pageStack.length > 0) {
+                // حذف آخرین صفحه از استک
+                pageStack.pop();
+                
+                if (pageStack.length > 0) {
+                    // بازگشت به صفحه قبلی
+                    const previousPage = pageStack[pageStack.length - 1];
+                    document.getElementById('modalTitle').textContent = previousPage.title;
+                    document.getElementById('contentIframe').src = previousPage.url;
+                    document.getElementById('contentFrame').style.display = 'flex';
+                } else {
+                    // بازگشت به صفحه اصلی
+                    closeContent();
+                }
+                return true;
+            } else if (isModalOpen) {
+                // بسته کردن مودال اگر باز است
+                closeContent();
+                return true;
+            }
+            return false;
+        }
+
+        // تشخیص حرکت برگشت در موبایل
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            if (!isModalOpen) return;
+            
+            const endX = event.changedTouches[0].clientX;
+            const endY = event.changedTouches[0].clientY;
+            const diffX = endX - startX;
+            const diffY = endY - startY;
+            
+            // تشخیص swipe راست به چپ (برگشت)
+            if (Math.abs(diffX) > Math.abs(diffY) && diffX > 100 && Math.abs(diffY) < 100) {
+                handleBackNavigation();
+            }
+        });
 
         // بستن پیام مدیریت و ذخیره وضعیت
         function closeModeDisplay() {
