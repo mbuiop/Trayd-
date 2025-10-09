@@ -2,673 +2,1421 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>پلتفرم تبلیغ سایت - سیگنال ارز دیجیتال</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شکار بمب‌ها - نسخه نهایی</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-            background: #ffffff;
-            color: #333;
+            background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+            color: white;
             min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 5px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            width: 60px;
+            height: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: #666;
-        }
-
-        .button-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            max-width: 800px;
-            width: 100%;
-            padding: 0 20px;
-        }
-
-        .modern-button {
-            position: relative;
-            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
-            border: none;
-            border-radius: 20px;
-            padding: 20px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #ffffff;
             cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 80px;
-            box-shadow: 
-                8px 8px 16px rgba(0, 0, 0, 0.3),
-                -8px -8px 16px rgba(255, 255, 255, 0.1),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            padding: 5px;
+            position: relative;
             overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
         }
 
-        .modern-button::before {
+        .nav-btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
 
-        .modern-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                12px 12px 24px rgba(0, 0, 0, 0.4),
-                -12px -12px 24px rgba(255, 255, 255, 0.15),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-        }
-
-        .modern-button:hover::before {
+        .nav-btn:hover::before {
             left: 100%;
         }
 
-        .modern-button:active {
-            transform: scale(0.98);
-            box-shadow: 
-                4px 4px 8px rgba(0, 0, 0, 0.3),
-                -4px -4px 8px rgba(255, 255, 255, 0.1),
-                inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            border: 2px solid #ffd700;
         }
 
-        .button-loading {
-            position: relative;
-            pointer-events: none;
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .button-loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid #ffffff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .nav-img {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 3px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .nav-text {
+            font-size: 0.7em;
+            color: #ffeb3b;
+            text-align: center;
         }
 
-        .content-frame {
-            display: none;
+        .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 10000;
+            flex-direction: column;
         }
 
-        .content-modal {
-            background: white;
-            padding: 0;
-            border-radius: 20px;
-            width: 95%;
-            height: 95%;
-            position: relative;
-            overflow: hidden;
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ffeb3b;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
         }
 
-        .modal-header {
-            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
-            color: white;
-            padding: 15px 20px;
+        .loading-text {
+            color: #ffeb3b;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
         }
 
-        .close-btn {
-            background: #ff4757;
+        .menu-btn {
+            background: none;
+            border: none;
             color: white;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+            font-size: 1.8em;
             cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            padding: 5px;
+            margin-left: 10px;
         }
 
-        .close-btn:hover {
-            background: #ff3742;
-            transform: scale(1.1);
+        .timer {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #ffeb3b;
         }
 
-        .content-iframe {
-            width: 100%;
-            height: calc(100% - 60px);
-            border: none;
-            background: white;
-            -webkit-overflow-scrolling: touch;
+        .stage-info {
+            text-align: center;
         }
 
-        .mode-display {
-            width: 100%;
-            max-width: 800px;
-            margin: 30px auto;
+        .stage-number {
+            font-size: 1.4em;
+            color: #4caf50;
+        }
+
+        .score {
+            font-size: 1.5em;
+            color: #2196f3;
+        }
+
+        .stage-complete {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.5);
+            text-align: center;
+            animation: stageComplete 3s ease-in-out forwards;
+        }
+
+        @keyframes stageComplete {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(-20px);
+            }
+            20% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0);
+            }
+            80% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0);
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(-20px);
+            }
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
             padding: 20px;
-            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
-            border-radius: 15px;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            display: none;
-            border: 2px solid #dee2e6;
-            position: relative;
+            transition: right 0.3s ease;
+            z-index: 2000;
+            overflow-y: auto;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
         }
 
-        .mode-display h3 {
-            color: #1a1a1a;
+        .side-menu.active {
+            right: 0;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            position: absolute;
+            left: 15px;
+            top: 15px;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .menu-section h3 {
+            color: #ffeb3b;
             margin-bottom: 15px;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.3em;
         }
 
-        .mode-display .content {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        .weapon-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
-        .mode-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff4757;
+        .weapon-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .weapon-item.selected {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .weapon-name {
+            font-weight: bold;
+            color: #ffeb3b;
+            margin-bottom: 5px;
+        }
+
+        .weapon-stats {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        .weapon-price {
+            font-size: 0.9em;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .buy-btn {
+            background: linear-gradient(45deg, #4caf50, #45a049);
             color: white;
             border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 0.9em;
+            width: 100%;
+        }
+
+        .buy-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .wallet-address {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.8em;
+            word-break: break-all;
+            text-align: center;
+            border: 1px solid #ffeb3b;
+            cursor: pointer;
+        }
+
+        .wallet-address code {
+            color: #ffeb3b;
+            font-weight: bold;
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #4caf50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 3000;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .coin {
+            position: fixed;
             width: 30px;
             height: 30px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #ff9800);
             border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
+            z-index: 1500;
+            pointer-events: none;
+            box-shadow: 0 0 15px #ffd700;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
+            font-size: 1.2em;
+            color: #8b6914;
+            font-weight: bold;
+            animation: coinFloat 1.5s ease-out forwards;
         }
 
-        .mode-close-btn:hover {
-            background: #ff3742;
-            transform: scale(1.1);
+        @keyframes coinFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 0;
+            }
         }
 
-        /* تنظیمات موبایل حرفه‌ای */
+        .game-board {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            flex: 1;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .squares-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 15px;
+            place-items: center;
+        }
+
+        .square {
+            position: relative;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            user-select: none;
+            touch-action: none;
+            overflow: hidden;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 50, 50, 0.3);
+        }
+
+        .square:active {
+            transform: scale(0.95);
+        }
+
+        .square.targeted {
+            box-shadow: 0 0 20px #ff0000;
+            border: 2px solid #ff0000;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .square-image {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+        }
+
+        .square-number {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #ffeb3b;
+        }
+
+        .square.clicked {
+            animation: pop 0.3s ease-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .weapon-bar {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 12px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+            position: relative;
+            min-height: 100px;
+            margin-bottom: 25px;
+            margin-top: auto;
+        }
+
+        .weapon-area {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(45deg, #2c3e50, #4a6491);
+            border-radius: 10px;
+            position: relative;
+            cursor: crosshair;
+            border: 3px solid #7f8c8d;
+            touch-action: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .weapon-area.active {
+            border-color: #e74c3c;
+            box-shadow: 0 0 15px #e74c3c;
+        }
+
+        .weapon-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .bullets {
+            font-size: 1em;
+            color: #e74c3c;
+        }
+
+        .reload-time {
+            font-size: 0.9em;
+            color: #f39c12;
+        }
+
+        /* تیربار واقعی */
+        .gun {
+            position: absolute;
+            bottom: 8px;
+            width: 100px;
+            height: 40px;
+            transition: left 0.05s ease-out;
+            z-index: 100;
+            will-change: left;
+            background-image: url('m.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* گلوله با سایه واقعی */
+        .bullet {
+            position: fixed;
+            width: 25px;
+            height: 25px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: bulletMove 0.8s linear forwards;
+            background: radial-gradient(circle, #ffd700, #ff9800);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700, 0 0 20px #ff9800;
+        }
+
+        @keyframes bulletMove {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        .explosion {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ff9800, #ff5722, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 400;
+            animation: explode 0.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .dynamic-score {
+            position: fixed;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffeb3b;
+            z-index: 1500;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.8);
+            animation: scoreFloat 1.5s ease-out forwards;
+        }
+
+        @keyframes scoreFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(0.8);
+                opacity: 0;
+            }
+        }
+
         @media (max-width: 768px) {
-            .header {
-                margin-bottom: 30px;
-                padding: 0 15px;
+            .container {
+                padding: 5px;
             }
             
-            .header h1 {
-                font-size: 1.8rem;
-                line-height: 1.2;
+            .top-nav {
+                padding: 5px 3px;
             }
-
-            .header p {
-                font-size: 1rem;
+            
+            .nav-btn {
+                width: 55px;
+                height: 55px;
             }
-
-            .button-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 0 15px;
+            
+            .nav-img {
+                width: 25px;
+                height: 25px;
             }
-
-            .modern-button {
-                min-height: 70px;
-                padding: 18px 25px;
-                font-size: 1rem;
-                border-radius: 15px;
-                touch-action: manipulation;
+            
+            .header {
+                padding: 10px 12px;
             }
-
-            .content-modal {
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
+            
+            .timer {
+                font-size: 1.4em;
             }
-
-            .modal-header {
-                padding: 12px 15px;
-                font-size: 0.9rem;
+            
+            .score {
+                font-size: 1.3em;
             }
-
-            .close-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 22px;
+            
+            .game-board {
+                padding: 10px;
+                margin-bottom: 8px;
             }
-
-            .mode-display {
-                margin: 20px 10px;
-                padding: 15px;
+            
+            .squares-container {
+                gap: 10px;
             }
-
-            .mode-display h3 {
-                font-size: 1.1rem;
+            
+            .square {
+                width: 70px;
+                height: 70px;
             }
-
-            .mode-display .content {
-                padding: 12px;
-                font-size: 0.9rem;
+            
+            .weapon-bar {
+                padding: 10px;
+                min-height: 90px;
+                margin-bottom: 20px;
+            }
+            
+            .side-menu {
+                width: 300px;
+            }
+            
+            .stage-complete {
+                font-size: 1.3em;
+                padding: 12px 25px;
             }
         }
 
         @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.6rem;
+            .square {
+                width: 65px;
+                height: 65px;
             }
-
-            .header p {
-                font-size: 0.9rem;
+            
+            .nav-btn {
+                width: 50px;
+                height: 50px;
             }
-
-            .modern-button {
-                min-height: 65px;
-                padding: 15px 20px;
-                font-size: 0.95rem;
+            
+            .nav-img {
+                width: 22px;
+                height: 22px;
             }
-
-            .button-container {
-                gap: 15px;
-                padding: 0 10px;
-            }
-
-            .modal-header {
-                padding: 10px 12px;
-            }
-
-            .close-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 20px;
-            }
-        }
-
-        /* حالت افقی موبایل */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .header {
-                margin-bottom: 20px;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .header p {
-                font-size: 0.85rem;
-            }
-
-            .button-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .modern-button {
-                min-height: 55px;
-                font-size: 0.9rem;
+            
+            .nav-text {
+                font-size: 0.6em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>پلتفرم تبلیغ سایت</h1>
-        <p>سیگنال ارز دیجیتال خوش آمدید</p>
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">در حال بارگذاری...</div>
     </div>
 
-    <div class="button-container">
-        <button class="modern-button" onclick="loadPage('sig.html', 'سیگنال ها')">سیگنال ها</button>
-        <button class="modern-button" onclick="loadPage('NMO.html', 'درباره اندیکاتور ها')">درباره اندیکاتور ها</button>
-        <button class="modern-button" onclick="loadPage('vc.html', 'ثبت سایت')">ثبت سایت</button>
-        <button class="modern-button" onclick="loadPage('dar.html', 'درباره ارز دیجیتال')">درباره ارز دیجیتال</button>
-        <button class="modern-button" onclick="loadPage('say.html', 'سایت های موجود')">سایت های موجود</button>
-    </div>
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="closeMenu()">×</button>
+        
+        <div class="menu-section">
+            <h3>🛒 فروشگاه اسلحه</h3>
+            <div id="weaponsList"></div>
+        </div>
 
-    <!-- نمایش محتوای فایل mode.html -->
-    <div id="modeDisplay" class="mode-display">
-        <button class="mode-close-btn" onclick="closeModeDisplay()">×</button>
-        <h3>📋 مدیریت سیستم</h3>
-        <div class="content" id="modeContent">
-            <!-- محتوای فایل mode.html اینجا نمایش داده می‌شود -->
+        <div class="menu-section">
+            <h3>📋 راهنما</h3>
+            <div style="color: #ccc; line-height: 1.6; font-size: 0.95em;">
+                <p>🎯 <strong>هدف بازی:</strong> بمب‌ها را با تیربار نابود کن!</p>
+                <p>🔫 <strong>تیربار:</strong> از ابتدا فعال است - تیرهای بی‌نهایت!</p>
+                <p>🎮 <strong>کنترل:</strong> موس یا انگشت را روی نوار تیربار حرکت دهید و کلیک کنید</p>
+                <p>💰 <strong>سکه‌ها:</strong> با نابود کردن بمب‌ها کسب کن</p>
+                <p>🛒 <strong>فروشگاه:</strong> اسلحه‌های قدرتمند بخر</p>
+                <br>
+                <p style="text-align: center; color: #ffeb3b; margin-top: 15px;">
+                    <strong>حمایت مالی داوطلبانه کاملا داوطلبانه میباشد اگر قصد واریز دارید لطفا از صحیح بودن آدرس و شبکه مطمئن باشید</strong><br>
+                    <small>TRC20: TV61aTh98MGqmteYzda5AaBzdXgGqreG6A</small>
+                </p>
+                <div class="wallet-address" onclick="copyWalletAddress()">
+                    <code>TV61aTh98MGqmteYzda5AaBzdXgGqreG6A</code>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="contentFrame" class="content-frame">
-        <div class="content-modal">
-            <div class="modal-header">
-                <h3 id="modalTitle">محتوا</h3>
-                <button class="close-btn" onclick="closeContent()">×</button>
+    <div class="container">
+        <div class="top-nav">
+            <button class="nav-btn" id="navBtn1" onclick="navigateWithLoading('m1.html', 'navBtn1', 'اطلاعیه مدیریت')">
+                <img src="my.jpg" alt="اطلاعیه مدیریت" class="nav-img">
+                <div class="nav-text">اطلاعیه مدیریت</div>
+            </button>
+            <button class="nav-btn" id="navBtn2" onclick="navigateWithLoading('m2.html', 'navBtn2', 'بازی کلیکی')">
+                <img src="my1.webp" alt="بازی کلیکی" class="nav-img">
+                <div class="nav-text">بازی کلیکی</div>
+            </button>
+            <button class="nav-btn" id="navBtn3" onclick="navigateWithLoading('MN1.html', 'navBtn3', 'سیگنال ترید')">
+                <img src="my2.webp" alt="سیگنال ترید" class="nav-img">
+                <div class="nav-text">سیگنال ترید</div>
+            </button>
+        </div>
+
+        <div id="gameScreen">
+            <div class="header">
+                <button class="menu-btn" onclick="toggleMenu()">☰</button>
+                <div class="timer" id="timer">30:00</div>
+                <div class="stage-info">
+                    <div>مرحله</div>
+                    <div class="stage-number" id="stageNumber">۱</div>
+                </div>
+                <div class="score" id="score">۰</div>
             </div>
-            <iframe id="contentIframe" class="content-iframe"></iframe>
+
+            <div class="game-board" id="gameBoard">
+                <div class="squares-container" id="squaresContainer"></div>
+            </div>
+
+            <div class="weapon-bar">
+                <div class="gun" id="gun"></div>
+                <div class="weapon-area" id="weaponArea"></div>
+                <div class="weapon-info">
+                    <div class="bullets" id="bulletsCount">بی‌نهایت تیر</div>
+                    <div class="reload-time" id="reloadTime">آماده</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // مدیریت تاریخچه مرورگر (بدون pushState)
-        let pageStack = [];
-        let isModalOpen = false;
+        // ========== عناصر DOM ==========
+        const squaresContainer = document.getElementById('squaresContainer');
+        const weaponArea = document.getElementById('weaponArea');
+        const gun = document.getElementById('gun');
+        const timerElement = document.getElementById('timer');
+        const stageNumberElement = document.getElementById('stageNumber');
+        const scoreElement = document.getElementById('score');
+        const sideMenu = document.getElementById('sideMenu');
+        const weaponsList = document.getElementById('weaponsList');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
 
-        function loadPage(url, title) {
-            // اضافه کردن انیمیشن لودینگ
-            const button = event.target;
-            button.classList.add('button-loading');
-            
-            // تست وجود فایل قبل از نمایش
-            fetch(url, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        // فایل موجود است
-                        setTimeout(() => {
-                            // اضافه کردن صفحه جدید به تاریخچه
-                            pageStack.push({
-                                url: url,
-                                title: title,
-                                timestamp: Date.now()
-                            });
-                            
-                            isModalOpen = true;
-                            document.getElementById('modalTitle').textContent = title;
-                            document.getElementById('contentIframe').src = url;
-                            document.getElementById('contentFrame').style.display = 'flex';
-                            
-                            // حذف انیمیشن لودینگ
-                            button.classList.remove('button-loading');
-                        }, 800);
-                    } else {
-                        // فایل موجود نیست
-                        setTimeout(() => {
-                            button.classList.remove('button-loading');
-                            alert('فایل ' + title + ' یافت نشد!');
-                        }, 500);
-                    }
-                })
-                .catch(() => {
-                    // خطا در دسترسی به فایل
-                    setTimeout(() => {
-                        button.classList.remove('button-loading');
-                        alert('خطا در بارگذاری ' + title);
-                    }, 500);
-                });
-        }
+        // ========== متغیرهای اصلی بازی ==========
+        const gameState = {
+            currentStage: 1,
+            score: 0,
+            coins: 0,
+            timeLeft: 1800,
+            squares: [],
+            gameInterval: null,
+            isWeaponActive: true,
+            isReloading: false,
+            gunPosition: 50,
+            isShooting: false,
+            shootInterval: null,
+            activeBullets: [],
+            currentWeapon: 1,
+            weapons: {
+                1: { name: "تفنگ معمولی", power: 100, price: 10000000, owned: true, fireRate: 300, clusterSize: 1 },
+                2: { name: "تفنگ سریع", power: 150, price: 25000000, owned: false, fireRate: 200, clusterSize: 3 },
+                3: { name: "مسلسل سبک", power: 200, price: 50000000, owned: false, fireRate: 150, clusterSize: 3 },
+                4: { name: "شاتگان", power: 300, price: 75000000, owned: false, fireRate: 400, clusterSize: 5 },
+                5: { name: "تخریب کن", power: 500, price: 100000000, owned: false, fireRate: 500, clusterSize: 5 },
+                6: { name: "امتیاز گیر", power: 700, price: 150000000, owned: false, fireRate: 250, clusterSize: 7 },
+                7: { name: "لیزر", power: 1000, price: 200000000, owned: false, fireRate: 100, clusterSize: 7 },
+                8: { name: "پلاسما گان", power: 1500, price: 300000000, owned: false, fireRate: 80, clusterSize: 9 },
+                9: { name: "اسلحه کوانتومی", power: 2000, price: 500000000, owned: false, fireRate: 50, clusterSize: 9 },
+                10: { name: "اسلحه افسانه‌ای", power: 3000, price: 1000000000, owned: false, fireRate: 30, clusterSize: 11 }
+            },
+            comboCount: 0,
+            lastHitTime: 0,
+            comboMultiplier: 1,
+            isTouchActive: false,
+            lastTouchX: 0
+        };
 
-        function closeContent() {
-            document.getElementById('contentFrame').style.display = 'none';
-            document.getElementById('contentIframe').src = '';
-            
-            // بازگشت به صفحه اصلی
-            pageStack = [];
-            isModalOpen = false;
-        }
+        // تنظیمات مراحل
+        const stageSettings = [
+            { time: 1800, squares: 15, baseNumber: 500, multiplier: 1 },
+            { time: 1800, squares: 15, baseNumber: 1000, multiplier: 1.5 },
+            { time: 1800, squares: 15, baseNumber: 2000, multiplier: 2 },
+            { time: 1800, squares: 15, baseNumber: 4000, multiplier: 2.5 },
+            { time: 1800, squares: 15, baseNumber: 8000, multiplier: 3 },
+            { time: 1800, squares: 15, baseNumber: 16000, multiplier: 3.5 },
+            { time: 1800, squares: 15, baseNumber: 32000, multiplier: 4 },
+            { time: 1800, squares: 15, baseNumber: 64000, multiplier: 4.5 },
+            { time: 1800, squares: 15, baseNumber: 128000, multiplier: 5 },
+            { time: 1800, squares: 15, baseNumber: 256000, multiplier: 5.5 }
+        ];
 
-        // مدیریت دکمه برگشت مرورگر با رویداد keydown
-        document.addEventListener('keydown', function(event) {
-            // تشخیص دکمه ESC یا برگشت
-            if (event.key === 'Escape' || event.keyCode === 27) {
-                handleBackNavigation();
+        // ========== سیستم ذخیره‌سازی ==========
+        function saveGame() {
+            try {
+                const saveData = {
+                    currentStage: gameState.currentStage,
+                    score: gameState.score,
+                    coins: gameState.coins,
+                    timeLeft: gameState.timeLeft,
+                    currentWeapon: gameState.currentWeapon,
+                    weapons: gameState.weapons,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('squareHunterSave', JSON.stringify(saveData));
+            } catch (e) {
+                console.error('خطا در ذخیره بازی:', e);
             }
-        });
+        }
 
-        // مدیریت حرکت برگشت
-        function handleBackNavigation() {
-            if (isModalOpen && pageStack.length > 0) {
-                // حذف آخرین صفحه از استک
-                pageStack.pop();
-                
-                if (pageStack.length > 0) {
-                    // بازگشت به صفحه قبلی
-                    const previousPage = pageStack[pageStack.length - 1];
-                    document.getElementById('modalTitle').textContent = previousPage.title;
-                    document.getElementById('contentIframe').src = previousPage.url;
-                    document.getElementById('contentFrame').style.display = 'flex';
-                } else {
-                    // بازگشت به صفحه اصلی
-                    closeContent();
+        function loadGame() {
+            try {
+                const saved = localStorage.getItem('squareHunterSave');
+                if (saved) {
+                    const saveData = JSON.parse(saved);
+                    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+                    
+                    if (Date.now() - saveData.timestamp < oneWeek) {
+                        Object.assign(gameState, saveData);
+                        return true;
+                    }
                 }
-                return true;
-            } else if (isModalOpen) {
-                // بسته کردن مودال اگر باز است
-                closeContent();
-                return true;
+            } catch (e) {
+                console.error('خطا در بارگذاری بازی:', e);
             }
             return false;
         }
 
-        // تشخیص حرکت برگشت در موبایل
-        let startX = 0;
-        let startY = 0;
+        // ========== سیستم کنترل لمسی ==========
+        function initWeaponControls() {
+            let isDragging = false;
+            let rafId = null;
 
-        document.addEventListener('touchstart', function(event) {
-            startX = event.touches[0].clientX;
-            startY = event.touches[0].clientY;
-        });
+            // رویدادهای موس
+            weaponArea.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
 
-        document.addEventListener('touchend', function(event) {
-            if (!isModalOpen) return;
-            
-            const endX = event.changedTouches[0].clientX;
-            const endY = event.changedTouches[0].clientY;
-            const diffX = endX - startX;
-            const diffY = endY - startY;
-            
-            // تشخیص swipe راست به چپ (برگشت)
-            if (Math.abs(diffX) > Math.abs(diffY) && diffX > 100 && Math.abs(diffY) < 100) {
-                handleBackNavigation();
+            // رویدادهای لمسی
+            weaponArea.addEventListener('touchstart', handleTouchStart, { passive: false });
+            document.addEventListener('touchmove', handleTouchMove, { passive: false });
+            document.addEventListener('touchend', handleTouchEnd);
+            document.addEventListener('touchcancel', handleTouchEnd);
+
+            function handleMouseDown(e) {
+                e.preventDefault();
+                isDragging = true;
+                startShooting();
+                updateGunPosition(e.clientX);
             }
-        });
 
-        // بستن پیام مدیریت و ذخیره وضعیت
-        function closeModeDisplay() {
-            document.getElementById('modeDisplay').style.display = 'none';
-            // ذخیره در حافظه مرورگر که کاربر پیام را بسته
-            try {
-                sessionStorage.setItem('modeDisplayClosed', 'true');
-            } catch(e) {
-                // اگر sessionStorage در دسترس نباشد
-                window.modeDisplayClosed = true;
+            function handleMouseMove(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    updateGunPosition(e.clientX);
+                }
+            }
+
+            function handleMouseUp() {
+                isDragging = false;
+                stopShooting();
+            }
+
+            function handleTouchStart(e) {
+                e.preventDefault();
+                if (e.touches.length > 0) {
+                    isDragging = true;
+                    gameState.isTouchActive = true;
+                    startShooting();
+                    updateGunPosition(e.touches[0].clientX);
+                }
+            }
+
+            function handleTouchMove(e) {
+                if (isDragging && e.touches.length > 0) {
+                    e.preventDefault();
+                    updateGunPosition(e.touches[0].clientX);
+                }
+            }
+
+            function handleTouchEnd() {
+                isDragging = false;
+                gameState.isTouchActive = false;
+                stopShooting();
+            }
+
+            function updateGunPosition(clientX) {
+                const rect = weaponArea.getBoundingClientRect();
+                const x = ((clientX - rect.left) / rect.width) * 100;
+                const clampedX = Math.max(5, Math.min(95, x));
+                
+                // استفاده از requestAnimationFrame برای روان‌ترین حرکت
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    gameState.gunPosition = clampedX;
+                    gun.style.left = `calc(${clampedX}% - 50px)`;
+                });
             }
         }
 
-        // بررسی آیا کاربر قبلاً پیام را بسته یا نه
-        function isModeClosed() {
-            try {
-                return sessionStorage.getItem('modeDisplayClosed') === 'true';
-            } catch(e) {
-                return window.modeDisplayClosed === true;
+        // ========== سیستم شلیک گلوله ==========
+        function startShooting() {
+            if (gameState.isShooting || gameState.isReloading) return;
+            
+            gameState.isShooting = true;
+            const weapon = gameState.weapons[gameState.currentWeapon];
+            
+            // شلیک اولیه
+            shootBullet();
+            
+            // تنظیم شلیک خودکار
+            gameState.shootInterval = setInterval(() => {
+                if (!gameState.isShooting || gameState.isReloading) return;
+                shootBullet();
+            }, weapon.fireRate);
+        }
+
+        function stopShooting() {
+            gameState.isShooting = false;
+            if (gameState.shootInterval) {
+                clearInterval(gameState.shootInterval);
+                gameState.shootInterval = null;
             }
         }
 
-        // تشخیص خودکار وجود فایل mode.html
-        function checkForModeFile() {
-            // اگر کاربر قبلاً پیام را بسته، نشان نده
-            if (isModeClosed()) {
-                return;
+        function shootBullet() {
+            const weapon = gameState.weapons[gameState.currentWeapon];
+            const clusterSize = weapon.clusterSize;
+            
+            // شلیک گلوله‌های خوشه‌ای
+            for (let i = 0; i < clusterSize; i++) {
+                setTimeout(() => {
+                    createBullet(i - Math.floor(clusterSize / 2));
+                }, i * 30);
             }
+            
+            // افکت شلیک
+            weaponArea.classList.add('active');
+            setTimeout(() => weaponArea.classList.remove('active'), 100);
+        }
 
-            // روش‌های مختلف برای تمام مرورگرها
-            const methods = [
-                // روش اول: HEAD request
-                () => fetch('mode.html', { method: 'HEAD' }),
-                // روش دوم: GET request کوچک
-                () => fetch('mode.html', { 
-                    method: 'GET',
-                    headers: { 'Range': 'bytes=0-10' }
-                }),
-                // روش سوم: GET معمولی
-                () => fetch('mode.html')
-            ];
-
-            function tryMethod(index) {
-                if (index >= methods.length) {
-                    // اگر هیچ روشی کار نکرد، سعی کن با XMLHttpRequest
-                    tryWithXHR();
+        function createBullet(spreadOffset) {
+            const bullet = document.createElement('div');
+            bullet.className = 'bullet';
+            
+            // محاسبه موقعیت شروع گلوله
+            const gunRect = gun.getBoundingClientRect();
+            const weaponAreaRect = weaponArea.getBoundingClientRect();
+            
+            const startX = gunRect.left + gunRect.width / 2 - 12.5;
+            const startY = weaponAreaRect.top;
+            
+            bullet.style.left = `${startX}px`;
+            bullet.style.top = `${startY}px`;
+            
+            // تنظیم افکت پراکندگی برای گلوله‌های خوشه‌ای
+            if (spreadOffset !== 0) {
+                bullet.style.transform = `translateX(${spreadOffset * 10}px)`;
+            }
+            
+            document.body.appendChild(bullet);
+            gameState.activeBullets.push(bullet);
+            
+            // حرکت گلوله و بررسی برخورد
+            const bulletInterval = setInterval(() => {
+                const currentTop = parseInt(bullet.style.top);
+                bullet.style.top = (currentTop - 15) + 'px';
+                
+                // بررسی برخورد
+                if (checkBulletCollision(bullet)) {
+                    clearInterval(bulletInterval);
+                    bullet.remove();
+                    const index = gameState.activeBullets.indexOf(bullet);
+                    if (index > -1) {
+                        gameState.activeBullets.splice(index, 1);
+                    }
                     return;
                 }
-
-                methods[index]()
-                    .then(response => {
-                        if (response.ok || response.status === 206) {
-                            loadModeContent(); // بارگذاری محتوا
-                        } else {
-                            tryMethod(index + 1);
-                        }
-                    })
-                    .catch(() => {
-                        tryMethod(index + 1);
-                    });
-            }
-
-            function tryWithXHR() {
-                const xhr = new XMLHttpRequest();
-                xhr.open('HEAD', 'mode.html', true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200 || xhr.status === 0) {
-                            loadModeContent();
-                        }
+                
+                // اگر گلوله از صفحه خارج شد
+                if (currentTop < -50) {
+                    clearInterval(bulletInterval);
+                    bullet.remove();
+                    const index = gameState.activeBullets.indexOf(bullet);
+                    if (index > -1) {
+                        gameState.activeBullets.splice(index, 1);
                     }
-                };
-                xhr.send();
-            }
-
-            tryMethod(0);
-        }
-
-        // بارگذاری محتوای فایل mode.html
-        function loadModeContent() {
-            fetch('mode.html')
-                .then(response => response.text())
-                .then(data => {
-                    // نمایش محتوا در صفحه اصلی
-                    displayModeContent(data);
-                })
-                .catch(() => {
-                    // سعی با XMLHttpRequest
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('GET', 'mode.html', true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            displayModeContent(xhr.responseText);
-                        }
-                    };
-                    xhr.send();
-                });
-        }
-
-        // نمایش محتوای mode.html در صفحه
-        function displayModeContent(content) {
-            const modeContent = document.getElementById('modeContent');
-            const modeDisplay = document.getElementById('modeDisplay');
-            
-            modeContent.innerHTML = content;
-            modeDisplay.style.display = 'block';
-        }
-
-        // بهبود عملکرد لمسی موبایل
-        function setupMobileOptimizations() {
-            // غیرفعال کردن زوم دابل کلیک
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', function (event) {
-                const now = (new Date()).getTime();
-                if (now - lastTouchEnd <= 300) {
-                    event.preventDefault();
                 }
-                lastTouchEnd = now;
-            }, false);
-
-            // بهبود اسکرول موبایل
-            document.body.style.webkitOverflowScrolling = 'touch';
-            
-            // تشخیص تغییر جهت صفحه
-            window.addEventListener('orientationchange', function() {
-                setTimeout(function() {
-                    window.scrollTo(0, 0);
-                }, 100);
-            });
+            }, 16);
         }
 
-        // بستن مودال با کلیک روی پس زمینه
-        document.getElementById('contentFrame').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeContent();
-            }
-        });
-
-        // بستن با کلید ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeContent();
-            }
-        });
-
-        // بررسی خودکار فایل mode.html هنگام لود صفحه
-        window.addEventListener('load', function() {
-            checkForModeFile();
+        // ========== سیستم تشخیص برخورد ==========
+        function checkBulletCollision(bullet) {
+            const bulletRect = bullet.getBoundingClientRect();
             
-            // اجرای تنظیمات موبایل
-            if ('ontouchstart' in window) {
-                setupMobileOptimizations();
+            // بررسی بمب‌های معمولی
+            for (let i = 0; i < gameState.squares.length; i++) {
+                const square = gameState.squares[i];
+                const squareRect = square.element.getBoundingClientRect();
+                
+                if (isColliding(bulletRect, squareRect)) {
+                    reduceSquareNumber(square);
+                    return true;
+                }
             }
-        });
+            
+            return false;
+        }
 
-        // بررسی مجدد هر 10 ثانیه (فقط اگر کاربر پیام را نبسته)
-        setInterval(function() {
-            if (!isModeClosed()) {
-                checkForModeFile();
+        function isColliding(rect1, rect2) {
+            return !(rect1.right < rect2.left || 
+                     rect1.left > rect2.right || 
+                     rect1.bottom < rect2.top || 
+                     rect1.top > rect2.bottom);
+        }
+
+        // ========== کاهش عدد بمب‌ها ==========
+        function reduceSquareNumber(square) {
+            try {
+                const numberElement = square.element.querySelector('.square-number');
+                let currentNumber = parseInt(square.element.dataset.number);
+                const weaponPower = gameState.weapons[gameState.currentWeapon].power;
+                
+                // کاهش عدد بمب
+                currentNumber = Math.max(0, currentNumber - weaponPower);
+                square.element.dataset.number = currentNumber;
+                numberElement.textContent = formatNumber(currentNumber);
+                
+                // اگر عدد به صفر رسید
+                if (currentNumber <= 0) {
+                    hitSquare(square.element);
+                } else {
+                    // نمایش امتیاز پویا برای کاهش عدد
+                    showDynamicScore(square.element, weaponPower);
+                    
+                    // انیمیشن ضربه
+                    square.element.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        square.element.style.transform = 'scale(1)';
+                    }, 100);
+                }
+            } catch (e) {
+                console.error('خطا در کاهش عدد بمب:', e);
             }
-        }, 10000);
+        }
+
+        // ========== سیستم بازی اصلی ==========
+        function startGame() {
+            try {
+                if (!loadGame()) {
+                    console.log('شروع بازی جدید');
+                }
+                
+                startStage();
+                updateWeaponsList();
+                initWeaponControls();
+                
+                // شروع تایمر بازی
+                gameState.gameInterval = setInterval(updateGame, 1000);
+                
+                console.log('بازی با موفقیت شروع شد');
+            } catch (e) {
+                console.error('خطا در شروع بازی:', e);
+            }
+        }
+
+        function startStage() {
+            try {
+                const settings = stageSettings[Math.min(gameState.currentStage - 1, stageSettings.length - 1)];
+                gameState.timeLeft = settings.time;
+                
+                createSquares();
+                updateUI();
+            } catch (e) {
+                console.error('خطا در شروع مرحله:', e);
+            }
+        }
+
+        function createSquares() {
+            try {
+                squaresContainer.innerHTML = '';
+                gameState.squares = [];
+                
+                const settings = stageSettings[Math.min(gameState.currentStage - 1, stageSettings.length - 1)];
+                
+                for (let i = 0; i < settings.squares; i++) {
+                    createSquare(i, settings);
+                }
+            } catch (e) {
+                console.error('خطا در ایجاد بمب‌ها:', e);
+            }
+        }
+
+        function createSquare(index, settings) {
+            try {
+                const square = document.createElement('div');
+                square.className = 'square';
+                
+                const number = Math.floor(settings.baseNumber + Math.random() * settings.baseNumber * settings.multiplier);
+                
+                square.innerHTML = `
+                    <div class="square-image">💣</div>
+                    <div class="square-number">${formatNumber(number)}</div>
+                `;
+                
+                square.dataset.number = number;
+                
+                squaresContainer.appendChild(square);
+                gameState.squares.push({
+                    element: square,
+                    value: number
+                });
+            } catch (e) {
+                console.error('خطا در ایجاد بمب:', e);
+            }
+        }
+
+        function hitSquare(square) {
+            try {
+                if (!gameState.isWeaponActive) return;
+                
+                // محاسبه کامبو
+                const now = Date.now();
+                if (now - gameState.lastHitTime < 2000) {
+                    gameState.comboCount++;
+                    gameState.comboMultiplier = 1 + (gameState.comboCount * 0.1);
+                } else {
+                    gameState.comboCount = 0;
+                    gameState.comboMultiplier = 1;
+                }
+                gameState.lastHitTime = now;
+                
+                const number = parseInt(square.dataset.number);
+                const scoreGain = Math.floor(number * gameState.comboMultiplier);
+                
+                gameState.score += scoreGain;
+                gameState.coins += Math.floor(scoreGain / 100);
+                
+                // نمایش امتیاز پویا
+                showDynamicScore(square, scoreGain);
+                
+                // ایجاد سکه
+                createCoin(square);
+                
+                // انفجار
+                createExplosion(square);
+                
+                // حذف بمب
+                square.classList.add('clicked');
+                setTimeout(() => {
+                    if (square.parentNode) {
+                        square.remove();
+                        const index = gameState.squares.findIndex(s => s.element === square);
+                        if (index > -1) {
+                            gameState.squares.splice(index, 1);
+                        }
+                        checkStageComplete();
+                    }
+                }, 300);
+                
+                updateUI();
+                saveGame();
+            } catch (e) {
+                console.error('خطا در ضربه به بمب:', e);
+            }
+        }
+
+        function checkStageComplete() {
+            if (gameState.squares.length === 0) {
+                // رفتن به مرحله بعد
+                setTimeout(() => {
+                    gameState.currentStage++;
+                    saveGame();
+                    showStageComplete();
+                    setTimeout(startStage, 2000);
+                }, 1000);
+            }
+        }
+
+        function updateGame() {
+            gameState.timeLeft--;
+            updateUI();
+            
+            if (gameState.timeLeft <= 0) {
+                endGame();
+            }
+        }
+
+        function updateUI() {
+            const minutes = Math.floor(gameState.timeLeft / 60);
+            const seconds = gameState.timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            stageNumberElement.textContent = gameState.currentStage;
+            scoreElement.textContent = `${formatNumber(gameState.score)} | ${formatNumber(gameState.coins)} سکه`;
+        }
+
+        function endGame() {
+            clearInterval(gameState.gameInterval);
+            alert(`بازی تمام شد! امتیاز نهایی: ${formatNumber(gameState.score)}`);
+            gameState.currentStage = 1;
+            gameState.score = 0;
+            gameState.coins = 0;
+            saveGame();
+            startStage();
+        }
+
+        // ========== افکت‌های بصری ==========
+        function showDynamicScore(element, score) {
+            try {
+                const rect = element.getBoundingClientRect();
+                const scoreElement = document.createElement('div');
+                scoreElement.className = 'dynamic-score';
+                scoreElement.textContent = `+${formatNumber(score)}`;
+                scoreElement.style.left = `${rect.left + rect.width / 2}px`;
+                scoreElement.style.top = `${rect.top}px`;
+                
+                document.body.appendChild(scoreElement);
+                
+                setTimeout(() => {
+                    scoreElement.remove();
+                }, 1500);
+            } catch (e) {
+                console.error('خطا در نمایش امتیاز پویا:', e);
+            }
+        }
+
+        function createCoin(element) {
+            try {
+                const rect = element.getBoundingClientRect();
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                coin.textContent = '💰';
+                coin.style.left = `${rect.left + rect.width / 2}px`;
+                coin.style.top = `${rect.top}px`;
+                
+                document.body.appendChild(coin);
+                
+                setTimeout(() => {
+                    coin.remove();
+                }, 1500);
+            } catch (e) {
+                console.error('خطا در ایجاد سکه:', e);
+            }
+        }
+
+        function createExplosion(element) {
+            try {
+                const rect = element.getBoundingClientRect();
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = `${rect.left + rect.width / 2 - 40}px`;
+                explosion.style.top = `${rect.top + rect.height / 2 - 40}px`;
+                
+                document.body.appendChild(explosion);
+                
+                setTimeout(() => {
+                    explosion.remove();
+                }, 500);
+            } catch (e) {
+                console.error('خطا در ایجاد انفجار:', e);
+            }
+        }
+
+        function showStageComplete() {
+            try {
+                const message = document.createElement('div');
+                message.className = 'stage-complete';
+                message.textContent = 'آفرین! به مرحله بعد رفتید';
+                document.body.appendChild(message);
+                
+                setTimeout(() => {
+                    message.remove();
+                }, 3000);
+            } catch (e) {
+                console.error('خطا در نمایش پیام مرحله:', e);
+            }
+        }
+
+        // ========== سیستم فروشگاه ==========
+        function updateWeaponsList() {
+            try {
+                weaponsList.innerHTML = '';
+                
+                for (const [id, weapon] of Object.entries(gameState.weapons)) {
+                    const weaponItem = document.createElement('div');
+                    weaponItem.className = `weapon-item ${weapon.owned ? 'selected' : ''} ${parseInt(id) === gameState.currentWeapon ? 'selected' : ''}`;
+                    
+                    weaponItem.innerHTML = `
+                        <div class="weapon-name">${weapon.name}</div>
+                        <div class="weapon-stats">قدرت: ${weapon.power} | سرعت: ${weapon.fireRate}ms</div>
+                        <div class="weapon-price">${formatNumber(weapon.price)} سکه</div>
+                        ${!weapon.owned ? `<button class="buy-btn" onclick="buyWeapon(${id})" ${gameState.coins >= weapon.price ? '' : 'disabled'}>خرید</button>` : ''}
+                        ${weapon.owned && parseInt(id) !== gameState.currentWeapon ? `<button class="buy-btn" onclick="equipWeapon(${id})">انتخاب</button>` : ''}
+                        ${parseInt(id) === gameState.currentWeapon ? '<div style="color: #4caf50; margin-top: 5px;">✓ انتخاب شده</div>' : ''}
+                    `;
+                    
+                    weaponsList.appendChild(weaponItem);
+                }
+            } catch (e) {
+                console.error('خطا در به‌روزرسانی لیست اسلحه‌ها:', e);
+            }
+        }
+
+        function buyWeapon(weaponId) {
+            try {
+                const weapon = gameState.weapons[weaponId];
+                if (gameState.coins >= weapon.price) {
+                    gameState.coins -= weapon.price;
+                    weapon.owned = true;
+                    gameState.currentWeapon = parseInt(weaponId);
+                    updateWeaponsList();
+                    updateUI();
+                    saveGame();
+                }
+            } catch (e) {
+                console.error('خطا در خرید اسلحه:', e);
+            }
+        }
+
+        function equipWeapon(weaponId) {
+            try {
+                gameState.currentWeapon = parseInt(weaponId);
+                updateWeaponsList();
+                saveGame();
+            } catch (e) {
+                console.error('خطا در تجهیز اسلحه:', e);
+            }
+        }
+
+        // ========== ابزارهای کمکی ==========
+        function formatNumber(num) {
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(1) + 'B';
+            } else if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            sideMenu.classList.remove('active');
+        }
+
+        function copyWalletAddress() {
+            try {
+                const walletAddress = "TV61aTh98MGqmteYzda5AaBzdXgGqreG6A";
+                navigator.clipboard.writeText(walletAddress).then(() => {
+                    showNotification("آدرس کیف پول کپی شد!");
+                });
+            } catch (err) {
+                showNotification("خطا در کپی آدرس! لطفا دستی کپی کنید.");
+            }
+        }
+
+        function showNotification(message) {
+            try {
+                const notification = document.createElement('div');
+                notification.className = 'copy-notification';
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 2000);
+            } catch (e) {
+                console.error('خطا در نمایش اعلان:', e);
+            }
+        }
+
+        function navigateWithLoading(url, buttonId, pageName) {
+            try {
+                document.getElementById(buttonId).classList.add('active');
+                loadingText.textContent = `در حال بارگذاری ${pageName}...`;
+                loadingOverlay.style.display = 'flex';
+                
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    showNotification(`صفحه ${pageName} بارگذاری شد!`);
+                }, 2000);
+            } catch (e) {
+                console.error('خطا در ناوبری:', e);
+            }
+        }
+
+        // ========== شروع بازی ==========
+        window.addEventListener('load', startGame);
+        window.addEventListener('beforeunload', saveGame);
+
     </script>
 </body>
 </html>
