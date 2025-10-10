@@ -468,26 +468,26 @@
         }
 
         .weapon-bar {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 12px;
-            border-radius: 15px;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
             text-align: center;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: none;
             flex-shrink: 0;
             position: relative;
-            min-height: 140px;
-            margin-bottom: 25px;
+            min-height: 200px;
+            margin-bottom: 10px;
             margin-top: auto;
         }
 
         .weapon-area {
             width: 100%;
-            height: 100px;
-            background: linear-gradient(45deg, #2c3e50, #4a6491);
-            border-radius: 10px;
+            height: 200px;
+            background: transparent;
+            border-radius: 0;
             position: relative;
             cursor: crosshair;
-            border: 3px solid #7f8c8d;
+            border: none;
             touch-action: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
@@ -495,33 +495,20 @@
         }
 
         .weapon-area.active {
-            border-color: #e74c3c;
-            box-shadow: 0 0 15px #e74c3c;
+            border-color: transparent;
+            box-shadow: none;
         }
 
         .weapon-info {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 8px;
+            display: none;
         }
 
-        .bullets {
-            font-size: 1em;
-            color: #e74c3c;
-        }
-
-        .reload-time {
-            font-size: 0.9em;
-            color: #f39c12;
-        }
-
-        /* تیربار واقعی - 3-4 برابر بزرگتر */
+        /* تیربار واقعی - 4 برابر بزرگتر بدون قاب */
         .gun {
             position: absolute;
-            bottom: 8px;
-            width: 240px;
-            height: 100px;
+            bottom: 0;
+            width: 400px;
+            height: 200px;
             transition: left 0.05s ease-out;
             z-index: 100;
             will-change: left;
@@ -529,14 +516,15 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            transform: scale(1.3);
+            border: none;
+            box-shadow: none;
         }
 
         /* گلوله با سایه واقعی */
         .bullet {
             position: fixed;
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             pointer-events: none;
             z-index: 1000;
             animation: bulletMove 0.8s linear forwards;
@@ -641,9 +629,8 @@
             }
             
             .weapon-bar {
-                padding: 10px;
-                min-height: 120px;
-                margin-bottom: 20px;
+                min-height: 180px;
+                margin-bottom: 5px;
             }
             
             .side-menu {
@@ -657,9 +644,12 @@
             
             /* تیربار در موبایل */
             .gun {
-                width: 200px;
-                height: 80px;
-                transform: scale(1.2);
+                width: 350px;
+                height: 175px;
+            }
+            
+            .weapon-area {
+                height: 180px;
             }
         }
 
@@ -685,9 +675,16 @@
             
             /* تیربار در موبایل کوچک */
             .gun {
-                width: 180px;
-                height: 70px;
-                transform: scale(1.1);
+                width: 300px;
+                height: 150px;
+            }
+            
+            .weapon-area {
+                height: 160px;
+            }
+            
+            .weapon-bar {
+                min-height: 160px;
             }
         }
     </style>
@@ -711,7 +708,7 @@
             <div style="color: #ccc; line-height: 1.6; font-size: 0.95em;">
                 <p>🎯 <strong>هدف بازی:</strong> بمب‌ها را با تیربار نابود کن!</p>
                 <p>🔫 <strong>تیربار:</strong> از ابتدا فعال است - تیرهای بی‌نهایت!</p>
-                <p>🎮 <strong>کنترل:</strong> موس یا انگشت را روی نوار تیربار حرکت دهید و کلیک کنید</p>
+                <p>🎮 <strong>کنترل:</strong> موس یا انگشت را روی تیربار حرکت دهید و کلیک کنید</p>
                 <p>💰 <strong>سکه‌ها:</strong> با نابود کردن بمب‌ها کسب کن</p>
                 <p>🛒 <strong>فروشگاه:</strong> اسلحه‌های قدرتمند بخر</p>
                 <br>
@@ -760,10 +757,6 @@
             <div class="weapon-bar">
                 <div class="gun" id="gun"></div>
                 <div class="weapon-area" id="weaponArea"></div>
-                <div class="weapon-info">
-                    <div class="bullets" id="bulletsCount">بی‌نهایت تیر</div>
-                    <div class="reload-time" id="reloadTime">آماده</div>
-                </div>
             </div>
         </div>
     </div>
@@ -926,13 +919,13 @@
             function updateGunPosition(clientX) {
                 const rect = weaponArea.getBoundingClientRect();
                 const x = ((clientX - rect.left) / rect.width) * 100;
-                const clampedX = Math.max(5, Math.min(95, x));
+                const clampedX = Math.max(10, Math.min(90, x));
                 
                 // استفاده از requestAnimationFrame برای روان‌ترین حرکت
                 if (rafId) cancelAnimationFrame(rafId);
                 rafId = requestAnimationFrame(() => {
                     gameState.gunPosition = clampedX;
-                    gun.style.left = `calc(${clampedX}% - 120px)`;
+                    gun.style.left = `calc(${clampedX}% - 200px)`;
                 });
             }
         }
@@ -972,10 +965,6 @@
                     createBullet(i - Math.floor(clusterSize / 2));
                 }, i * 30);
             }
-            
-            // افکت شلیک
-            weaponArea.classList.add('active');
-            setTimeout(() => weaponArea.classList.remove('active'), 100);
         }
 
         function createBullet(spreadOffset) {
@@ -986,7 +975,7 @@
             const gunRect = gun.getBoundingClientRect();
             const weaponAreaRect = weaponArea.getBoundingClientRect();
             
-            const startX = gunRect.left + gunRect.width / 2 - 12.5;
+            const startX = gunRect.left + gunRect.width / 2 - 15;
             const startY = weaponAreaRect.top;
             
             bullet.style.left = `${startX}px`;
@@ -994,7 +983,7 @@
             
             // تنظیم افکت پراکندگی برای گلوله‌های خوشه‌ای
             if (spreadOffset !== 0) {
-                bullet.style.transform = `translateX(${spreadOffset * 10}px)`;
+                bullet.style.transform = `translateX(${spreadOffset * 15}px)`;
             }
             
             document.body.appendChild(bullet);
@@ -1003,7 +992,7 @@
             // حرکت گلوله و بررسی برخورد
             const bulletInterval = setInterval(() => {
                 const currentTop = parseInt(bullet.style.top);
-                bullet.style.top = (currentTop - 15) + 'px';
+                bullet.style.top = (currentTop - 20) + 'px';
                 
                 // بررسی برخورد
                 if (checkBulletCollision(bullet)) {
