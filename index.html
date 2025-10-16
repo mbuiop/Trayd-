@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بازی آنلاین</title>
+    <title>سایت بازی</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -12,666 +12,484 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #0f0f1a, #1a1a2e, #16213e);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        /* صفحه اصلی */
-        .main-container {
-            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('m.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .game-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #4a6bff, #6c8bff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 5px 15px rgba(74, 107, 255, 0.3);
-        }
-        
-        .game-subtitle {
-            font-size: 1.3rem;
-            color: #b0b0d0;
-            margin-bottom: 3rem;
-            max-width: 500px;
-            line-height: 1.6;
-        }
-        
-        /* دکمه شروع بازی */
-        .start-btn {
-            background: linear-gradient(135deg, #4a6bff, #6c8bff);
             color: white;
+            overflow: hidden;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* افکت سه بعدی برای پس‌زمینه */
+        .bg-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('m.jpg') center/cover no-repeat;
+            transform-style: preserve-3d;
+            transform: translateZ(-20px) scale(1.1);
+            z-index: -1;
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+            width: 90%;
+            max-width: 500px;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(5deg); }
+            50% { transform: translateY(-10px) rotateX(5deg); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transform: translateZ(20px);
+        }
+
+        .main-btn {
+            background: linear-gradient(45deg, #ff0080, #ff8c00);
             border: none;
-            padding: 1.5rem 4rem;
-            border-radius: 60px;
+            border-radius: 50px;
+            color: white;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: bold;
+            padding: 15px 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 128, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transform: translateZ(30px);
+        }
+
+        .main-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff8c00, #ff0080);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .main-btn:hover {
+            transform: translateY(-5px) translateZ(35px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 0, 128, 0.6);
+        }
+
+        .main-btn:hover:before {
+            opacity: 1;
+        }
+
+        .main-btn:active {
+            transform: translateY(0) translateZ(30px);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            transform: translateZ(10px);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 10px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(74, 107, 255, 0.4);
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateZ(15px);
         }
-        
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) translateZ(20px);
         }
-        
-        .start-btn:hover::before {
-            left: 100%;
-        }
-        
-        .start-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(74, 107, 255, 0.6);
-        }
-        
-        .start-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        
-        /* لودینگ */
-        .loading-overlay {
+
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 15, 26, 0.98);
-            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            transform-style: preserve-3d;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(26, 42, 108, 0.9), rgba(178, 31, 31, 0.9));
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 0, 128, 0.3);
+            position: relative;
+            animation: modalAppear 0.5s ease;
+            transform: translateZ(50px);
             backdrop-filter: blur(10px);
         }
-        
-        .loading-content {
-            text-align: center;
+
+        @keyframes modalAppear {
+            from { transform: scale(0.8) translateZ(50px); opacity: 0; }
+            to { transform: scale(1) translateZ(50px); opacity: 1; }
         }
-        
-        .loading-text {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            color: #e0e0ff;
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transform: translateZ(10px);
         }
-        
-        /* اسپینر لودینگ */
+
+        .card-number {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateZ(10px);
+        }
+
+        .card-number:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) translateZ(15px);
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transform-style: preserve-3d;
+        }
+
         .spinner {
             width: 80px;
             height: 80px;
-            margin: 0 auto 2rem;
-            position: relative;
-        }
-        
-        .spinner-inner {
-            width: 100%;
-            height: 100%;
-            border: 4px solid transparent;
-            border-top: 4px solid #4a6bff;
-            border-right: 4px solid #6c8bff;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #ff0080;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            position: relative;
+            margin-bottom: 20px;
+            transform: translateZ(50px);
         }
-        
-        .spinner-inner::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: 3px solid transparent;
-            border-bottom: 3px solid #4a6bff;
-            border-left: 3px solid #6c8bff;
-            border-radius: 50%;
-            animation: spinReverse 0.8s linear infinite;
-        }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg) translateZ(50px); }
+            100% { transform: rotate(360deg) translateZ(50px); }
         }
-        
-        @keyframes spinReverse {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-        
-        /* نوار پیشرفت */
-        .progress-container {
-            width: 300px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4a6bff, #6c8bff);
-            border-radius: 4px;
-            width: 0%;
-            transition: width 3s ease-in-out;
-            position: relative;
-        }
-        
-        .progress-bar::after {
-            content: '';
+
+        .light {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 1.5s infinite;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(20px);
+            z-index: 1;
+            animation: moveLight 10s infinite alternate;
+            transform-style: preserve-3d;
         }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+
+        @keyframes moveLight {
+            0% { transform: translate(-50%, -50%) translateZ(-10px); }
+            100% { transform: translate(50%, 50%) translateZ(-10px); }
         }
-        
-        /* ناوبری پایین */
-        .bottom-nav {
-            background: rgba(15, 15, 26, 0.95);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+
+        .light:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            background: radial-gradient(circle, rgba(255,0,128,0.2) 0%, rgba(255,0,128,0) 70%);
         }
-        
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 160px;
-            justify-content: center;
+
+        .light:nth-child(2) {
+            top: 70%;
+            left: 80%;
+            background: radial-gradient(circle, rgba(255,140,0,0.2) 0%, rgba(255,140,0,0) 70%);
         }
-        
-        .nav-btn:hover {
-            background: rgba(74, 107, 255, 0.2);
-            transform: translateY(-3px);
+
+        .light:nth-child(3) {
+            top: 40%;
+            left: 60%;
+            background: radial-gradient(circle, rgba(26,42,108,0.2) 0%, rgba(26,42,108,0) 70%);
         }
-        
-        .nav-icon {
-            font-size: 1.4rem;
-            color: #4a6bff;
-        }
-        
-        /* پیام bn */
-        .bn-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        /* افکت پارالاکس برای عمق بیشتر */
+        .parallax {
+            position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(15, 15, 26, 0.98);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-            backdrop-filter: blur(15px);
-        }
-        
-        .bn-content {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 500px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .bn-title {
-            font-size: 2rem;
-            color: #4a6bff;
-            margin-bottom: 1.5rem;
-        }
-        
-        .bn-message {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #e0e0ff;
-            margin-bottom: 2rem;
-        }
-        
-        .bn-close-btn {
-            background: linear-gradient(135deg, #4a6bff, #6c8bff);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .bn-close-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
-        }
-        
-        /* صفحات پشتیبانی و حمایت مالی */
-        .page-overlay {
-            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 15, 26, 0.98);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1002;
-            backdrop-filter: blur(15px);
+            z-index: -1;
+            transform-style: preserve-3d;
         }
-        
-        .page-content {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 600px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+
+        .parallax-layer {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            background: url('m.jpg') center/cover no-repeat;
+            transform-style: preserve-3d;
         }
-        
-        .page-title {
-            font-size: 2rem;
-            color: #4a6bff;
-            margin-bottom: 2rem;
+
+        .layer-1 {
+            transform: translateZ(-50px) scale(1.2);
+            filter: brightness(0.4) blur(2px);
         }
-        
-        .card-number {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-size: 1.3rem;
-            font-family: monospace;
-            letter-spacing: 2px;
-            margin: 1.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
+
+        .layer-2 {
+            transform: translateZ(-30px) scale(1.1);
+            filter: brightness(0.6) blur(1px);
         }
-        
-        .card-number:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.02);
-        }
-        
-        .support-email {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            margin: 1.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: white;
-            display: block;
-        }
-        
-        .support-email:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.02);
-        }
-        
-        .page-message {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #e0e0ff;
-            margin-bottom: 2rem;
-            text-align: right;
-        }
-        
-        .copy-btn {
-            background: linear-gradient(135deg, #4a6bff, #6c8bff);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
-        }
-        
-        .copy-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
-        }
-        
-        .close-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
-        }
-        
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .game-title {
-                font-size: 2.5rem;
-            }
-            
-            .game-subtitle {
-                font-size: 1.1rem;
-                padding: 0 1rem;
-            }
-            
-            .start-btn {
-                padding: 1.2rem 3rem;
-                font-size: 1.3rem;
-            }
-            
-            .bottom-nav {
-                gap: 1.5rem;
-                padding: 1rem;
-            }
-            
-            .nav-btn {
-                min-width: 140px;
-                padding: 0.8rem 1.5rem;
-            }
-            
-            .bn-content, .page-content {
-                padding: 2rem;
-                margin: 1rem;
-            }
-            
-            .bn-title, .page-title {
-                font-size: 1.7rem;
-            }
-            
-            .card-number {
-                font-size: 1.1rem;
-                padding: 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .game-title {
-                font-size: 2rem;
-            }
-            
-            .game-subtitle {
-                font-size: 1rem;
-            }
-            
-            .start-btn {
-                padding: 1rem 2.5rem;
-                font-size: 1.2rem;
-            }
-            
-            .bottom-nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .nav-btn {
-                width: 100%;
-                max-width: 250px;
-            }
+
+        .layer-3 {
+            transform: translateZ(-10px) scale(1.05);
+            filter: brightness(0.8);
         }
     </style>
 </head>
 <body>
-    <!-- پیام bn (مخفی) -->
-    <div class="bn-overlay" id="bnOverlay">
-        <div class="bn-content">
-            <h2 class="bn-title">پیام مهم</h2>
-            <div class="bn-message">
-                <p>به سایت بازی خوش آمدید! این پیام فقط یک بار نمایش داده می‌شود.</p>
-                <p>پس از بستن این پیام، دیگر هرگز نمایش داده نخواهد شد.</p>
-                <p>از حضور شما سپاسگزاریم و امیدواریم از بازی لذت ببرید.</p>
-            </div>
-            <button class="bn-close-btn" onclick="closeBnMessage()">
-                متوجه شدم
-            </button>
-        </div>
+    <!-- افکت پارالاکس برای عمق سه بعدی -->
+    <div class="parallax">
+        <div class="parallax-layer layer-1"></div>
+        <div class="parallax-layer layer-2"></div>
+        <div class="parallax-layer layer-3"></div>
     </div>
-    
-    <!-- صفحه حمایت مالی -->
-    <div class="page-overlay" id="donatePage">
-        <div class="page-content">
-            <h2 class="page-title">حمایت مالی داوطلبانه</h2>
-            <div class="page-message">
-                <p>با سلام و احترام،</p>
-                <p>از اینکه بازی ما را انتخاب کرده‌اید صمیمانه سپاسگزاریم. این پروژه حاصل ساعت‌ها تلاش و Passion تیم توسعه است.</p>
-                <p>حمایت‌های مالی داوطلبانه شما به ما انگیزه و امکان می‌دهد تا:</p>
-                <p>• بازی را به طور مستمر به‌روزرسانی کنیم</p>
-                <p>• امکانات جدید اضافه کنیم</p>
-                <p>• سرورهای بهتر تهیه کنیم</p>
-                <p>• باگ‌ها را سریع‌تر رفع کنیم</p>
-                <p>هر مقدار حمایت، حتی کوچک، برای ما ارزشمند است و قدردان لطف شما خواهیم بود.</p>
-                <p>شماره کارت برای حمایت مالی:</p>
-            </div>
-            <div class="card-number" onclick="copyCardNumber()" title="کلیک برای کپی">
-                ۵۸۹۲ - ۱۰۱۱ - ۸۷۳۲ - ۲۷۷۷
-            </div>
-            <p style="color: #b0b0d0; margin-bottom: 1.5rem; font-size: 0.9rem;">کلیک کنید تا شماره کارت کپی شود</p>
-            <button class="copy-btn" onclick="copyCardNumber()">
-                <i class="fas fa-copy"></i>
-                کپی شماره کارت
-            </button>
-            <button class="close-btn" onclick="closePage('donatePage')">
-                بستن
-            </button>
-        </div>
+
+    <!-- نورپردازی پس‌زمینه -->
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+
+    <div class="container">
+        <h1>بازی جذاب</h1>
+        <button class="main-btn" id="startGame">شروع بازی</button>
     </div>
-    
-    <!-- صفحه پشتیبانی -->
-    <div class="page-overlay" id="supportPage">
-        <div class="page-content">
-            <h2 class="page-title">پشتیبانی</h2>
-            <div class="page-message">
-                <p>برای ارتباط با تیم پشتیبانی، از طریق ایمیل زیر با ما در تماس باشید:</p>
-            </div>
-            <a href="mailto:milad.yari1377m@gmail.com" class="support-email">
-                <i class="fas fa-envelope"></i>
-                milad.yari1377m@gmail.com
-            </a>
-            <p style="color: #b0b0d0; margin-bottom: 1.5rem;">کلیک کنید تا برنامه ایمیل باز شود</p>
-            <button class="copy-btn" onclick="copyEmail()">
-                <i class="fas fa-copy"></i>
-                کپی آدرس ایمیل
-            </button>
-            <button class="close-btn" onclick="closePage('supportPage')">
-                بستن
-            </button>
-        </div>
-    </div>
-    
-    <!-- لودینگ -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="spinner">
-                <div class="spinner-inner"></div>
-            </div>
-            <div class="loading-text" id="loadingText">در حال بارگذاری بازی...</div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- صفحه اصلی -->
-    <div class="main-container">
-        <h1 class="game-title">بازی آنلاین</h1>
-        <p class="game-subtitle">تجربه‌ای هیجان‌انگیز و فراموش‌نشدنی در انتظار شماست. آماده شروع ماجراجویی هستید؟</p>
-        
-        <button class="start-btn" onclick="startGame()">
-            <i class="fas fa-play"></i>
-            شروع بازی
-        </button>
-    </div>
-    
-    <!-- ناوبری پایین -->
-    <nav class="bottom-nav">
-        <button class="nav-btn" onclick="openPage('support')">
-            <i class="fas fa-headset nav-icon"></i>
+
+    <div class="bottom-nav">
+        <button class="nav-btn" id="supportBtn">
+            <i class="fas fa-headset"></i>
             پشتیبانی
         </button>
-        <button class="nav-btn" onclick="openPage('donate')">
-            <i class="fas fa-donate nav-icon"></i>
+        <button class="nav-btn" id="donateBtn">
+            <i class="fas fa-donate"></i>
             حمایت مالی
         </button>
-    </nav>
+    </div>
+
+    <!-- مودال پشتیبانی -->
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSupport">&times;</button>
+            <h2>پشتیبانی</h2>
+            <p>برای ارتباط با پشتیبانی، لطفاً به آدرس ایمیل زیر مراجعه کنید:</p>
+            <div class="card-number" onclick="openEmail()">
+                milad.yari1377m@gmail.com
+            </div>
+            <p>با کلیک بر روی آدرس ایمیل، برنامه ایمیل شما باز خواهد شد.</p>
+        </div>
+    </div>
+
+    <!-- مودال حمایت مالی -->
+    <div class="modal" id="donateModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeDonate">&times;</button>
+            <h2>حمایت مالی</h2>
+            <p>حمایت شما داوطلبانه و بسیار ارزشمند است. با حمایت مالی خود به توسعه و بهبود این برنامه کمک کنید.</p>
+            <p>لطفاً مبلغ مورد نظر خود را به شماره کارت زیر واریز نمایید:</p>
+            <div class="card-number" onclick="copyCardNumber()">
+                5892 1011 8732 2777
+            </div>
+            <p>با کلیک بر روی شماره کارت، شماره کپی خواهد شد.</p>
+            <p>از حمایت شما صمیمانه سپاسگزاریم.</p>
+        </div>
+    </div>
+
+    <!-- لودینگ -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>لطفاً منتظر بمانید...</p>
+    </div>
 
     <script>
-        // بررسی نمایش پیام bn
-        document.addEventListener('DOMContentLoaded', function() {
-            const bnShown = localStorage.getItem('bnShown');
-            
-            if (!bnShown) {
-                setTimeout(() => {
-                    document.getElementById('bnOverlay').style.display = 'flex';
-                }, 1000);
-            }
-            
-            // انیمیشن ورود عناصر اصلی
-            const elements = document.querySelectorAll('.game-title, .game-subtitle, .start-btn');
-            elements.forEach((element, index) => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(20px)';
+        // بررسی مسیر مخفی
+        if(window.location.pathname.includes('bn.html')) {
+            // بررسی اینکه آیا قبلاً این صفحه دیده شده یا نه
+            if(!localStorage.getItem('secretPageShown')) {
+                // نمایش محتوای مخفی
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; color: white; text-align: center; padding: 20px;">
+                        <div>
+                            <h1 style="font-size: 2.5rem; margin-bottom: 20px;">محتوای مخفی</h1>
+                            <p style="font-size: 1.2rem; margin-bottom: 30px;">این یک محتوای مخفی است که فقط یک بار نمایش داده می‌شود.</p>
+                            <button onclick="closeSecretPage()" style="background: #ff0080; border: none; border-radius: 50px; color: white; padding: 10px 30px; font-size: 1rem; cursor: pointer;">بستن</button>
+                        </div>
+                    </div>
+                `;
                 
-                setTimeout(() => {
-                    element.style.transition = 'all 0.6s ease';
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
-        
-        // بستن پیام bn
-        function closeBnMessage() {
-            document.getElementById('bnOverlay').style.display = 'none';
-            localStorage.setItem('bnShown', 'true');
+                // علامت‌گذاری که صفحه مخفی دیده شده
+                localStorage.setItem('secretPageShown', 'true');
+            } else {
+                // اگر قبلاً دیده شده، به صفحه اصلی هدایت شود
+                window.location.href = 'index.html';
+            }
         }
-        
-        // تابع شروع بازی
-        function startGame() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const progressBar = document.getElementById('progressBar');
+
+        function closeSecretPage() {
+            // بستن پنجره/تب
+            window.close();
             
-            loadingOverlay.style.display = 'flex';
-            progressBar.style.width = '0%';
-            
+            // اگر بستن پنجره کار نکرد، به صفحه اصلی هدایت شود
             setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 100);
-            
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        // عناصر DOM
+        const startGameBtn = document.getElementById('startGame');
+        const supportBtn = document.getElementById('supportBtn');
+        const donateBtn = document.getElementById('donateBtn');
+        const supportModal = document.getElementById('supportModal');
+        const donateModal = document.getElementById('donateModal');
+        const closeSupport = document.getElementById('closeSupport');
+        const closeDonate = document.getElementById('closeDonate');
+        const loading = document.getElementById('loading');
+
+        // مدیریت کلیک روی دکمه شروع بازی
+        startGameBtn.addEventListener('click', function() {
+            showLoading();
             setTimeout(() => {
                 window.location.href = 'm.html';
             }, 3000);
-        }
-        
-        // توابع مدیریت صفحات
-        function openPage(page) {
-            if (page === 'support') {
-                document.getElementById('supportPage').style.display = 'flex';
-            } else if (page === 'donate') {
-                document.getElementById('donatePage').style.display = 'flex';
+        });
+
+        // مدیریت کلیک روی دکمه پشتیبانی
+        supportBtn.addEventListener('click', function() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                supportModal.style.display = 'flex';
+            }, 3000);
+        });
+
+        // مدیریت کلیک روی دکمه حمایت مالی
+        donateBtn.addEventListener('click', function() {
+            showLoading();
+            setTimeout(() => {
+                hideLoading();
+                donateModal.style.display = 'flex';
+            }, 3000);
+        });
+
+        // بستن مودال‌ها
+        closeSupport.addEventListener('click', function() {
+            supportModal.style.display = 'none';
+        });
+
+        closeDonate.addEventListener('click', function() {
+            donateModal.style.display = 'none';
+        });
+
+        // بستن مودال با کلیک خارج از آن
+        window.addEventListener('click', function(event) {
+            if (event.target === supportModal) {
+                supportModal.style.display = 'none';
             }
+            if (event.target === donateModal) {
+                donateModal.style.display = 'none';
+            }
+        });
+
+        // نمایش لودینگ
+        function showLoading() {
+            loading.style.display = 'flex';
         }
-        
-        function closePage(pageId) {
-            document.getElementById(pageId).style.display = 'none';
+
+        // پنهان کردن لودینگ
+        function hideLoading() {
+            loading.style.display = 'none';
         }
-        
+
         // کپی شماره کارت
         function copyCardNumber() {
             const cardNumber = '5892101187322777';
             navigator.clipboard.writeText(cardNumber).then(() => {
-                alert('شماره کارت با موفقیت کپی شد: ' + cardNumber);
-            }).catch(() => {
-                // Fallback برای مرورگرهای قدیمی
-                const tempInput = document.createElement('input');
-                tempInput.value = cardNumber;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
                 alert('شماره کارت کپی شد: ' + cardNumber);
             });
         }
-        
-        // کپی ایمیل
-        function copyEmail() {
-            const email = 'milad.yari1377m@gmail.com';
-            navigator.clipboard.writeText(email).then(() => {
-                alert('آدرس ایمیل کپی شد: ' + email);
-            }).catch(() => {
-                const tempInput = document.createElement('input');
-                tempInput.value = email;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                alert('آدرس ایمیل کپی شد: ' + email);
-            });
+
+        // باز کردن ایمیل
+        function openEmail() {
+            window.location.href = 'mailto:milad.yari1377m@gmail.com';
         }
-        
-        // بستن صفحات با کلید ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closePage('supportPage');
-                closePage('donatePage');
-                closeBnMessage();
-            }
+
+        // افکت پارالاکس با حرکت موس
+        document.addEventListener('mousemove', function(e) {
+            const x = (e.clientX / window.innerWidth) * 10 - 5;
+            const y = (e.clientY / window.innerHeight) * 10 - 5;
+            
+            document.querySelector('.layer-1').style.transform = `translateZ(-50px) scale(1.2) translate(${x * 0.5}px, ${y * 0.5}px)`;
+            document.querySelector('.layer-2').style.transform = `translateZ(-30px) scale(1.1) translate(${x * 0.3}px, ${y * 0.3}px)`;
+            document.querySelector('.layer-3').style.transform = `translateZ(-10px) scale(1.05) translate(${x * 0.1}px, ${y * 0.1}px)`;
         });
     </script>
 </body>
