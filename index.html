@@ -2,8 +2,8 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سایت بازی</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سایت بازی - طراحی ثابت</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -13,34 +13,31 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('m.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('m.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
-            overflow: hidden;
-            position: relative;
-            perspective: 1000px;
-        }
-
-        /* افکت سه بعدی برای پس‌زمینه */
-        .bg-3d {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: fixed;
             width: 100%;
             height: 100%;
-            background: url('m.jpg') center/cover no-repeat;
-            transform-style: preserve-3d;
-            transform: translateZ(-20px) scale(1.1);
-            z-index: -1;
-            filter: brightness(0.8) contrast(1.2);
+            overflow: hidden;
         }
 
         .container {
@@ -48,20 +45,16 @@
             z-index: 2;
             width: 90%;
             max-width: 500px;
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(5deg); }
-            50% { transform: translateY(-10px) rotateX(5deg); }
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         h1 {
             font-size: 2.5rem;
             margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transform: translateZ(20px);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .main-btn {
@@ -75,11 +68,12 @@
             margin: 20px 0;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 0, 128, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
             z-index: 1;
-            transform: translateZ(30px);
+            width: 100%;
+            max-width: 300px;
         }
 
         .main-btn:before {
@@ -96,8 +90,8 @@
         }
 
         .main-btn:hover {
-            transform: translateY(-5px) translateZ(35px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 0, 128, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
         }
 
         .main-btn:hover:before {
@@ -105,7 +99,7 @@
         }
 
         .main-btn:active {
-            transform: translateY(0) translateZ(30px);
+            transform: translateY(0);
         }
 
         .bottom-nav {
@@ -115,10 +109,9 @@
             display: flex;
             justify-content: space-around;
             padding: 15px 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             z-index: 10;
-            transform: translateZ(10px);
         }
 
         .nav-btn {
@@ -134,12 +127,11 @@
             gap: 8px;
             font-size: 1rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transform: translateZ(15px);
         }
 
         .nav-btn:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px) translateZ(20px);
+            transform: translateY(-3px);
         }
 
         .modal {
@@ -153,26 +145,25 @@
             z-index: 100;
             justify-content: center;
             align-items: center;
-            transform-style: preserve-3d;
         }
 
         .modal-content {
-            background: linear-gradient(135deg, rgba(26, 42, 108, 0.9), rgba(178, 31, 31, 0.9));
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
             padding: 30px;
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
             text-align: center;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 0, 128, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             position: relative;
             animation: modalAppear 0.5s ease;
-            transform: translateZ(50px);
-            backdrop-filter: blur(10px);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         @keyframes modalAppear {
-            from { transform: scale(0.8) translateZ(50px); opacity: 0; }
-            to { transform: scale(1) translateZ(50px); opacity: 1; }
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .close-btn {
@@ -184,7 +175,6 @@
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
-            transform: translateZ(10px);
         }
 
         .card-number {
@@ -196,12 +186,10 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            transform: translateZ(10px);
         }
 
         .card-number:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px) translateZ(15px);
         }
 
         .loading {
@@ -216,7 +204,6 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            transform-style: preserve-3d;
         }
 
         .spinner {
@@ -227,12 +214,11 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
-            transform: translateZ(50px);
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg) translateZ(50px); }
-            100% { transform: rotate(360deg) translateZ(50px); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .light {
@@ -244,12 +230,11 @@
             filter: blur(20px);
             z-index: 1;
             animation: moveLight 10s infinite alternate;
-            transform-style: preserve-3d;
         }
 
         @keyframes moveLight {
-            0% { transform: translate(-50%, -50%) translateZ(-10px); }
-            100% { transform: translate(50%, 50%) translateZ(-10px); }
+            0% { transform: translate(-50%, -50%); }
+            100% { transform: translate(50%, 50%); }
         }
 
         .light:nth-child(1) {
@@ -270,59 +255,41 @@
             background: radial-gradient(circle, rgba(26,42,108,0.2) 0%, rgba(26,42,108,0) 70%);
         }
 
-        /* افکت پارالاکس برای عمق بیشتر */
-        .parallax {
-            position: absolute;
+        /* استایل برای جلوگیری از اسکرول در موبایل */
+        .no-scroll {
+            overflow: hidden;
+            position: fixed;
             width: 100%;
             height: 100%;
+        }
+
+        /* استایل برای محتوای مخفی */
+        .secret-content {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
-            transform-style: preserve-3d;
-        }
-
-        .parallax-layer {
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            top: -10%;
-            left: -10%;
-            background: url('m.jpg') center/cover no-repeat;
-            transform-style: preserve-3d;
-        }
-
-        .layer-1 {
-            transform: translateZ(-50px) scale(1.2);
-            filter: brightness(0.4) blur(2px);
-        }
-
-        .layer-2 {
-            transform: translateZ(-30px) scale(1.1);
-            filter: brightness(0.6) blur(1px);
-        }
-
-        .layer-3 {
-            transform: translateZ(-10px) scale(1.05);
-            filter: brightness(0.8);
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: white;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
-<body>
-    <!-- افکت پارالاکس برای عمق سه بعدی -->
-    <div class="parallax">
-        <div class="parallax-layer layer-1"></div>
-        <div class="parallax-layer layer-2"></div>
-        <div class="parallax-layer layer-3"></div>
-    </div>
-
+<body class="no-scroll">
     <!-- نورپردازی پس‌زمینه -->
     <div class="light"></div>
     <div class="light"></div>
     <div class="light"></div>
 
     <div class="container">
-        <h1>بازی جذاب سه بعدی انلاین حرفه ایی بیش از هزار بازی انلاین حرفه ایی از بازی ها لذت  ببرید</h1>
-        <button class"main-btn" id="startGame">شروع بازی</button>
+        <h1>بازی جذاب</h1>
+        <button class="main-btn" id="startGame">شروع بازی</button>
     </div>
 
     <div class="bottom-nav">
@@ -370,22 +337,42 @@
         <p>لطفاً منتظر بمانید...</p>
     </div>
 
+    <!-- محتوای مخفی -->
+    <div class="secret-content" id="secretContent">
+        <div>
+            <h1 style="font-size: 2.5rem; margin-bottom: 20px;">محتوای مخفی</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">این یک محتوای مخفی است که فقط یک بار نمایش داده می‌شود.</p>
+            <button onclick="closeSecretPage()" style="background: #ff0080; border: none; border-radius: 50px; color: white; padding: 10px 30px; font-size: 1rem; cursor: pointer;">بستن</button>
+        </div>
+    </div>
+
     <script>
+        // جلوگیری کامل از اسکرول
+        document.addEventListener('DOMContentLoaded', function() {
+            // جلوگیری از اسکرول با چرخ موس
+            document.body.addEventListener('wheel', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+            
+            // جلوگیری از اسکرول با تاچ
+            document.body.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+            
+            // جلوگیری از اسکرول با کیبورد
+            document.body.addEventListener('keydown', function(e) {
+                if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+                    e.preventDefault();
+                }
+            }, false);
+        });
+
         // بررسی مسیر مخفی
         if(window.location.pathname.includes('bn.html')) {
             // بررسی اینکه آیا قبلاً این صفحه دیده شده یا نه
             if(!localStorage.getItem('secretPageShown')) {
                 // نمایش محتوای مخفی
-                document.body.innerHTML = `
-                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; color: white; text-align: center; padding: 20px;">
-                        <div>
-                            <h1 style="font-size: 2.5rem; margin-bottom: 20px;">محتوای مخفی</h1>
-                            <p style="font-size: 1.2rem; margin-bottom: 30px;">این یک محتوای مخفی است که فقط یک بار نمایش داده می‌شود.</p>
-                            <button onclick="closeSecretPage()" style="background: #ff0080; border: none; border-radius: 50px; color: white; padding: 10px 30px; font-size: 1rem; cursor: pointer;">بستن</button>
-                        </div>
-                    </div>
-                `;
-                
+                document.getElementById('secretContent').style.display = 'flex';
                 // علامت‌گذاری که صفحه مخفی دیده شده
                 localStorage.setItem('secretPageShown', 'true');
             } else {
@@ -418,7 +405,7 @@
         startGameBtn.addEventListener('click', function() {
             showLoading();
             setTimeout(() => {
-                window.location.href = 'https://www.crazygames.com';
+                window.location.href = 'm.html';
             }, 3000);
         });
 
@@ -481,16 +468,6 @@
         function openEmail() {
             window.location.href = 'mailto:milad.yari1377m@gmail.com';
         }
-
-        // افکت پارالاکس با حرکت موس
-        document.addEventListener('mousemove', function(e) {
-            const x = (e.clientX / window.innerWidth) * 10 - 5;
-            const y = (e.clientY / window.innerHeight) * 10 - 5;
-            
-            document.querySelector('.layer-1').style.transform = `translateZ(-50px) scale(1.2) translate(${x * 0.5}px, ${y * 0.5}px)`;
-            document.querySelector('.layer-2').style.transform = `translateZ(-30px) scale(1.1) translate(${x * 0.3}px, ${y * 0.3}px)`;
-            document.querySelector('.layer-3').style.transform = `translateZ(-10px) scale(1.05) translate(${x * 0.1}px, ${y * 0.1}px)`;
-        });
     </script>
 </body>
 </html>
