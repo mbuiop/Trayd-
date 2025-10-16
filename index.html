@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سایت بازی</title>
+    <title>سایت بازی‌های آنلاین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,298 +14,531 @@
         }
         
         body {
-            background: #1a1a2e;
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e, #16213e);
             color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
         
-        /* منوی همبرگری */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #4a6bff;
-            border: none;
-            color: white;
-            font-size: 24px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1000;
+        /* هدر */
+        header {
+            background: rgba(15, 15, 26, 0.9);
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* منوی کشویی */
-        .menu {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100vh;
-            background: #0f0f1a;
-            transition: right 0.3s ease;
-            z-index: 999;
-            padding: 80px 20px 20px 20px;
-            overflow-y: auto;
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4a6bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
         
-        .menu.active {
-            right: 0;
-        }
-        
-        /* دکمه‌های بازی */
-        .game-btn {
-            display: block;
-            width: 100%;
-            background: #2d2d4d;
-            color: white;
-            border: none;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: right;
-            transition: background 0.3s;
-        }
-        
-        .game-btn:hover {
-            background: #4a6bff;
+        .logo i {
+            font-size: 3rem;
         }
         
         /* محتوای اصلی */
-        .content {
+        main {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 2rem;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
             width: 100%;
-            height: calc(100vh - 80px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4a6bff, #6c8bff, #4a6bff);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(74, 107, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(74, 107, 255, 0.2);
+            border-color: rgba(74, 107, 255, 0.3);
+        }
+        
+        .game-icon {
+            font-size: 3.5rem;
+            color: #4a6bff;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-card:hover .game-icon {
+            transform: scale(1.1);
+        }
+        
+        .game-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #e0e0ff;
+        }
+        
+        .game-description {
+            font-size: 1rem;
+            color: #b0b0d0;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #4a6bff, #6c8bff);
+            color: white;
             border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+            justify-content: center;
+        }
+        
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .play-btn:hover::before {
+            left: 100%;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(74, 107, 255, 0.4);
+        }
+        
+        /* لودینگ سه‌بعدی */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 26, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading-container {
+            text-align: center;
+        }
+        
+        .loading-text {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #e0e0ff;
+        }
+        
+        /* اسپینر سه‌بعدی */
+        .spinner-3d {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3d 2s infinite linear;
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+        
+        .cube-face {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #4a6bff, #6c8bff);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            opacity: 0.8;
+        }
+        
+        .cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(40px); }
+        .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(40px); }
+        .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(40px); }
+        .cube-face:nth-child(4) { transform: rotateY(270deg) translateZ(40px); }
+        .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+        .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+        
+        @keyframes rotate3d {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        
+        /* بار پیشرفت */
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 2rem auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a6bff, #6c8bff);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 3s linear;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         /* ناوبری پایین */
         .bottom-nav {
-            background: #0f0f1a;
-            padding: 15px 20px;
+            background: rgba(15, 15, 26, 0.95);
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            border-top: 1px solid #2d2d4d;
+            gap: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
         
         .nav-btn {
-            background: #2d2d4d;
+            background: rgba(255, 255, 255, 0.05);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 1rem 2rem;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 160px;
+            justify-content: center;
         }
         
         .nav-btn:hover {
-            background: #4a6bff;
+            background: rgba(74, 107, 255, 0.2);
+            transform: translateY(-3px);
         }
         
-        /* صفحه اصلی */
-        .home-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .home-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .nav-icon {
+            font-size: 1.4rem;
             color: #4a6bff;
         }
         
-        .home-subtitle {
-            font-size: 1.2rem;
-            color: #b0b0d0;
-            margin-bottom: 2rem;
+        /* انیمیشن‌ها */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        /* صفحه bn.html */
-        .bn-page {
-            padding: 2rem;
-            text-align: center;
-            background: #1a1a2e;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
         }
         
-        .bn-title {
-            font-size: 2rem;
-            color: #4a6bff;
-            margin-bottom: 1.5rem;
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .logo i {
+                font-size: 2.2rem;
+            }
+            
+            .game-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .bottom-nav {
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            
+            .nav-btn {
+                min-width: 140px;
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .progress-bar {
+                width: 250px;
+            }
         }
         
-        .bn-content {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-        
-        .back-btn {
-            background: #4a6bff;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 2rem;
-            transition: background 0.3s;
-        }
-        
-        .back-btn:hover {
-            background: #3a5bef;
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.6rem;
+            }
+            
+            .game-name {
+                font-size: 1.4rem;
+            }
+            
+            .bottom-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .progress-bar {
+                width: 200px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- دکمه منوی همبرگری -->
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    
-    <!-- منوی کشویی -->
-    <div class="menu" id="menu">
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی تفنگ‌دار</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی ماشین‌سواری</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی فوتبال</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی پازل</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی اکشن</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی استراتژی</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی ورزشی</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی ماجراجویی</button>
-        <button class="game-btn" onclick="openGame('https://www.crazygames.com')">بازی فکری</button>
-        <button class="game-btn" onclick="openCrazyGames()">بازی‌های CrazyGames</button>
+    <!-- لودینگ سه‌بعدی -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-container">
+            <div class="spinner-3d">
+                <div class="cube">
+                    <div class="cube-face"></div>
+                    <div class="cube-face"></div>
+                    <div class="cube-face"></div>
+                    <div class="cube-face"></div>
+                    <div class="cube-face"></div>
+                    <div class="cube-face"></div>
+                </div>
+            </div>
+            <div class="loading-text" id="loadingText">در حال بارگذاری بازی...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
     </div>
+    
+    <!-- هدر -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-gamepad"></i>
+            <span>بازی‌های آنلاین</span>
+        </div>
+    </header>
     
     <!-- محتوای اصلی -->
-    <div class="content" id="contentArea">
-        <!-- صفحه اصلی پیش‌فرض -->
-        <div class="home-page" id="homePage">
-            <h1 class="home-title">به سایت بازی خوش آمدید</h1>
-            <p class="home-subtitle">برای مشاهده بازی‌ها، منوی بالا را باز کنید</p>
-        </div>
-        
-        <!-- صفحه bn.html -->
-        <div class="bn-page" id="bnPage" style="display: none;">
-            <h2 class="bn-title">محتوای ویژه</h2>
-            <div class="bn-content">
-                <p>این محتوای ویژه فقط یک بار نمایش داده می‌شود.</p>
-                <p>پس از بستن این صفحه، دیگر قابل دسترسی نخواهد بود.</p>
-                <p>این یک سیستم امنیتی برای جلوگیری از نمایش مکرر محتوا است.</p>
+    <main>
+        <div class="games-grid">
+            <!-- بازی ۱ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-gun"></i>
+                </div>
+                <h3 class="game-name">بازی تیراندازی</h3>
+                <p class="game-description">تجربه تیراندازی هیجان‌انگیز با اسلحه‌های مختلف و ماموریت‌های متنوع</p>
+                <button class="play-btn" onclick="startLoading('m1.html', 'بازی تیراندازی')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
             </div>
-            <button class="back-btn" onclick="goHome()">بازگشت به صفحه اصلی</button>
+            
+            <!-- بازی ۲ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-racing-car"></i>
+                </div>
+                <h3 class="game-name">مسابقات سرعت</h3>
+                <p class="game-description">مسابقات ماشین‌سواری با سرعت بالا و پیست‌های متنوع</p>
+                <button class="play-btn" onclick="startLoading('m2.html', 'مسابقات سرعت')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
+            </div>
+            
+            <!-- بازی ３ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h3 class="game-name">فوتبال حرفه‌ای</h3>
+                <p class="game-description">بازی فوتبال واقعی با تیم‌های معروف و استادیوم‌های بزرگ</p>
+                <button class="play-btn" onclick="startLoading('m3.html', 'فوتبال حرفه‌ای')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
+            </div>
+            
+            <!-- بازی ４ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <h3 class="game-name">چالش فکری</h3>
+                <p class="game-description">معماهای هوشمندانه برای تقویت ذهن و سرگرمی آموزشی</p>
+                <button class="play-btn" onclick="startLoading('m4.html', 'چالش فکری')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
+            </div>
+            
+            <!-- بازی ５ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-running"></i>
+                </div>
+                <h3 class="game-name">اکشن و ماجراجویی</h3>
+                <p class="game-description">ماجراجویی‌های پرهیجان با چالش‌های مختلف و دشمنان متنوع</p>
+                <button class="play-btn" onclick="startLoading('m5.html', 'اکشن و ماجراجویی')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
+            </div>
+            
+            <!-- بازی ６ -->
+            <div class="game-card fade-in-up">
+                <div class="game-icon">
+                    <i class="fas fa-chess"></i>
+                </div>
+                <h3 class="game-name">استراتژی و جنگ</h3>
+                <p class="game-description">بازی‌های استراتژیک با برنامه‌ریزی و مدیریت منابع</p>
+                <button class="play-btn" onclick="startLoading('m6.html', 'استراتژی و جنگ')">
+                    <i class="fas fa-play"></i>
+                    شروع بازی
+                </button>
+            </div>
         </div>
-        
-        <!-- iframe برای نمایش محتوای خارجی -->
-        <iframe class="content" id="contentFrame" style="display: none;"></iframe>
-    </div>
+    </main>
     
     <!-- ناوبری پایین -->
-    <div class="bottom-nav">
-        <button class="nav-btn" onclick="openBnPage()">پشتیبانی</button>
-        <button class="nav-btn" onclick="openBnPage()">حمایت مالی</button>
-    </div>
+    <nav class="bottom-nav">
+        <button class="nav-btn" onclick="openPage('support')">
+            <i class="fas fa-headset nav-icon"></i>
+            پشتیبانی
+        </button>
+        <button class="nav-btn" onclick="openPage('donate')">
+            <i class="fas fa-donate nav-icon"></i>
+            حمایت مالی
+        </button>
+    </nav>
 
     <script>
-        // وضعیت نمایش bn.html
-        let bnPageShown = false;
-        
-        // تابع نمایش/مخفی کردن منو
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('active');
-        }
-        
-        // تابع باز کردن بازی‌ها
-        function openGame(gameFile) {
-            hideAllPages();
-            const frame = document.getElementById('contentFrame');
-            frame.style.display = 'block';
-            frame.src = gameFile;
-            toggleMenu();
-        }
-        
-        // تابع باز کردن CrazyGames
-        function openCrazyGames() {
-            hideAllPages();
-            const frame = document.getElementById('contentFrame');
-            frame.style.display = 'block';
-            frame.src = 'https://www.crazygames.com';
-            toggleMenu();
-        }
-        
-        // تابع باز کردن صفحه bn.html
-        function openBnPage() {
-            if (!bnPageShown) {
-                hideAllPages();
-                document.getElementById('bnPage').style.display = 'flex';
-                bnPageShown = true;
-            } else {
-                goHome();
-            }
-        }
-        
-        // تابع بازگشت به صفحه اصلی
-        function goHome() {
-            hideAllPages();
-            document.getElementById('homePage').style.display = 'flex';
-        }
-        
-        // تابع مخفی کردن تمام صفحات
-        function hideAllPages() {
-            document.getElementById('homePage').style.display = 'none';
-            document.getElementById('bnPage').style.display = 'none';
-            document.getElementById('contentFrame').style.display = 'none';
-        }
-        
-        // بستن منو با کلیک خارج از آن
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('menu');
-            const menuBtn = document.querySelector('.menu-btn');
+        // تابع شروع لودینگ
+        function startLoading(gameFile, gameName) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
+            const progressFill = document.getElementById('progressFill');
             
-            if (!menu.contains(event.target) && !menuBtn.contains(event.target) && menu.classList.contains('active')) {
-                menu.classList.remove('active');
-            }
-        });
+            // نمایش لودینگ
+            loadingText.textContent = `در حال بارگذاری ${gameName}...`;
+            loadingOverlay.style.display = 'flex';
+            
+            // ریست کردن پیشرفت
+            progressFill.style.width = '0%';
+            
+            // شروع انیمیشن پیشرفت
+            setTimeout(() => {
+                progressFill.style.width = '100%';
+            }, 100);
+            
+            // پس از ۳ ثانیه، بازی را باز کن
+            setTimeout(() => {
+                // در اینجا می‌توانید بازی را در iframe یا صفحه جدید باز کنید
+                // برای مثال:
+                window.open(gameFile, '_self');
+                
+                // مخفی کردن لودینگ (اگر بازی در iframe باز شود)
+                // loadingOverlay.style.display = 'none';
+            }, 3000);
+        }
         
-        // مدیریت دکمه برگشت مرورگر
-        window.addEventListener('popstate', function(event) {
-            goHome();
-        });
+        // تابع باز کردن صفحات
+        function openPage(page) {
+            if (page === 'support') {
+                alert('صفحه پشتیبانی - برای ارتباط با ما از طریق ایمیل تماس بگیرید.');
+            } else if (page === 'donate') {
+                alert('صفحه حمایت مالی - از حمایت شما سپاسگزاریم.');
+            }
+        }
         
-        // جلوگیری از راست کلیک
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        // جلوگیری از کلیدهای خاص
-        document.addEventListener('keydown', function(e) {
-            // جلوگیری از F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-            }
-            // جلوگیری از Ctrl+Shift+I
-            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                e.preventDefault();
-            }
-            // جلوگیری از Ctrl+U
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-            }
+        // انیمیشن برای کارت‌ها
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
         });
     </script>
 </body>
