@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سایت بازی - نمایش محتوا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استایل‌های کلی */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #0f0f1a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* استایل بخش اصلی - تمام صفحه */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 100vh;
+        }
+        
+        .content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        /* استایل ناوبری پایین صفحه */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            z-index: 100;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            min-width: 120px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(74, 107, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 107, 255, 0.3);
+        }
+        
+        .nav-item.active {
+            background: rgba(74, 107, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.2);
+        }
+        
+        .nav-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #4a6bff;
+        }
+        
+        .nav-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e0e0ff;
+        }
+        
+        /* لوگو در گوشه */
+        .logo {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a6bff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 101;
+            background: rgba(15, 15, 26, 0.7);
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .bottom-nav {
+                gap: 1.5rem;
+                padding: 0.8rem 1rem;
+            }
+            
+            .nav-item {
+                min-width: 100px;
+                padding: 0.6rem 1rem;
+            }
+            
+            .nav-icon {
+                font-size: 1.5rem;
+            }
+            
+            .nav-text {
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                top: 1rem;
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bottom-nav {
+                gap: 0.8rem;
+                padding: 0.6rem 0.5rem;
+            }
+            
+            .nav-item {
+                min-width: 80px;
+                padding: 0.5rem 0.8rem;
+            }
+            
+            .nav-icon {
+                font-size: 1.3rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .nav-text {
+                font-size: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 1rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- لوگو -->
+    <div class="logo fade-in">
+        <i class="fas fa-gamepad"></i>
+        <span>بازی‌های آنلاین</span>
+    </div>
+    
+    <!-- محتوای اصلی - تمام صفحه -->
+    <main>
+        <iframe src="m5.html" class="content-frame" title="محتوای سایت"></iframe>
+    </main>
+    
+    <!-- ناوبری پایین صفحه -->
+    <nav class="bottom-nav fade-in">
+        <a href="m1.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-headset"></i></span>
+            <span class="nav-text">پشتیبانی</span>
+        </a>
+        <a href="m1.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-donate"></i></span>
+            <span class="nav-text">حمایت مالی</span>
+        </a>
+    </nav>
+
+    <script>
+        // اسکریپت برای مدیریت نمایش محتوا و تعاملات
+        document.addEventListener('DOMContentLoaded', function() {
+            const frame = document.querySelector('.content-frame');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            // مدیریت وضعیت فعال برای دکمه‌ها
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // نمایش پیام در صورت عدم بارگذاری iframe
+            frame.addEventListener('load', function() {
+                console.log('محتوای m5.html با موفقیت بارگذاری شد');
+            });
+            
+            frame.addEventListener('error', function() {
+                console.log('خطا در بارگذاری محتوای m5.html');
+                // در صورت خطا، محتوای جایگزین نمایش داده می‌شود
+                const main = document.querySelector('main');
+                main.innerHTML = `
+                    <div style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#1a1a2e; color:#fff; text-align:center; padding:2rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:4rem; color:#ff6b6b; margin-bottom:1.5rem;"></i>
+                        <h2 style="font-size:2rem; margin-bottom:1rem;">خطا در بارگذاری محتوا</h2>
+                        <p style="font-size:1.2rem; max-width:600px; line-height:1.6;">
+                            متأسفانه محتوای درخواستی بارگذاری نشد. لطفاً از موجود بودن فایل m5.html اطمینان حاصل کنید.
+                        </p>
+                        <button onclick="location.reload()" style="margin-top:2rem; padding:0.8rem 2rem; background:#4a6bff; color:white; border:none; border-radius:8px; font-size:1.1rem; cursor:pointer;">
+                            تلاش مجدد
+                        </button>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
