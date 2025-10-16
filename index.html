@@ -250,18 +250,6 @@
             text-align: center;
             padding: 20px;
         }
-        
-        /* iframe برای نمایش سایت */
-        .site-frame {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body class="no-scroll">
@@ -313,9 +301,6 @@
             <p>از حمایت شما صمیمانه سپاسگزاریم.</p>
         </div>
     </div>
-
-    <!-- iframe برای نمایش سایت -->
-    <iframe class="site-frame" id="gameFrame" src=""></iframe>
 
     <!-- محتوای مخفی -->
     <div class="secret-content" id="secretContent">
@@ -379,13 +364,10 @@
         const donateModal = document.getElementById('donateModal');
         const closeSupport = document.getElementById('closeSupport');
         const closeDonate = document.getElementById('closeDonate');
-        const gameFrame = document.getElementById('gameFrame');
 
-        // مدیریت کلیک روی دکمه شروع بازی
+        // مدیریت کلیک روی دکمه شروع بازی - باز کردن در تب جدید
         startGameBtn.addEventListener('click', function() {
-            // نمایش سایت در iframe
-            gameFrame.src = 'https://www.crazygames.com';
-            gameFrame.style.display = 'block';
+            window.open('https://www.crazygames.com', '_blank');
         });
 
         // مدیریت کلیک روی دکمه پشتیبانی
