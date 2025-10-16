@@ -192,35 +192,6 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        .loading {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            border-top: 8px solid #ff0080;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         .light {
             position: absolute;
             width: 200px;
@@ -279,6 +250,18 @@
             text-align: center;
             padding: 20px;
         }
+        
+        /* iframe برای نمایش سایت */
+        .site-frame {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body class="no-scroll">
@@ -288,7 +271,7 @@
     <div class="light"></div>
 
     <div class="container">
-        <h1>بازی جذاب انلاین حرفه ای نهایت استفاده را ببرید </h1>
+        <h1>بازی جذاب</h1>
         <button class="main-btn" id="startGame">شروع بازی</button>
     </div>
 
@@ -331,11 +314,8 @@
         </div>
     </div>
 
-    <!-- لودینگ -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>لطفاً منتظر بمانید...</p>
-    </div>
+    <!-- iframe برای نمایش سایت -->
+    <iframe class="site-frame" id="gameFrame" src=""></iframe>
 
     <!-- محتوای مخفی -->
     <div class="secret-content" id="secretContent">
@@ -399,32 +379,23 @@
         const donateModal = document.getElementById('donateModal');
         const closeSupport = document.getElementById('closeSupport');
         const closeDonate = document.getElementById('closeDonate');
-        const loading = document.getElementById('loading');
+        const gameFrame = document.getElementById('gameFrame');
 
         // مدیریت کلیک روی دکمه شروع بازی
         startGameBtn.addEventListener('click', function() {
-            showLoading();
-            setTimeout(() => {
-                window.location.href = 'https://www.crazygames.com';
-            }, 3000);
+            // نمایش سایت در iframe
+            gameFrame.src = 'https://www.crazygames.com';
+            gameFrame.style.display = 'block';
         });
 
         // مدیریت کلیک روی دکمه پشتیبانی
         supportBtn.addEventListener('click', function() {
-            showLoading();
-            setTimeout(() => {
-                hideLoading();
-                supportModal.style.display = 'flex';
-            }, 3000);
+            supportModal.style.display = 'flex';
         });
 
         // مدیریت کلیک روی دکمه حمایت مالی
         donateBtn.addEventListener('click', function() {
-            showLoading();
-            setTimeout(() => {
-                hideLoading();
-                donateModal.style.display = 'flex';
-            }, 3000);
+            donateModal.style.display = 'flex';
         });
 
         // بستن مودال‌ها
@@ -445,16 +416,6 @@
                 donateModal.style.display = 'none';
             }
         });
-
-        // نمایش لودینگ
-        function showLoading() {
-            loading.style.display = 'flex';
-        }
-
-        // پنهان کردن لودینگ
-        function hideLoading() {
-            loading.style.display = 'none';
-        }
 
         // کپی شماره کارت
         function copyCardNumber() {
