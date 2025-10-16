@@ -235,6 +235,172 @@
             color: #4a6bff;
         }
         
+        /* پیام bn */
+        .bn-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 26, 0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            backdrop-filter: blur(15px);
+        }
+        
+        .bn-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .bn-title {
+            font-size: 2rem;
+            color: #4a6bff;
+            margin-bottom: 1.5rem;
+        }
+        
+        .bn-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e0e0ff;
+            margin-bottom: 2rem;
+        }
+        
+        .bn-close-btn {
+            background: linear-gradient(135deg, #4a6bff, #6c8bff);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bn-close-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+        }
+        
+        /* صفحات پشتیبانی و حمایت مالی */
+        .page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 26, 0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            backdrop-filter: blur(15px);
+        }
+        
+        .page-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: #4a6bff;
+            margin-bottom: 2rem;
+        }
+        
+        .card-number {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-family: monospace;
+            letter-spacing: 2px;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-number:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+        
+        .support-email {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+        
+        .support-email:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+        
+        .page-message {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0ff;
+            margin-bottom: 2rem;
+            text-align: right;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #4a6bff, #6c8bff);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
         /* رسپانسیو */
         @media (max-width: 768px) {
             .game-title {
@@ -259,6 +425,20 @@
             .nav-btn {
                 min-width: 140px;
                 padding: 0.8rem 1.5rem;
+            }
+            
+            .bn-content, .page-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .bn-title, .page-title {
+                font-size: 1.7rem;
+            }
+            
+            .card-number {
+                font-size: 1.1rem;
+                padding: 1rem;
             }
         }
         
@@ -289,6 +469,72 @@
     </style>
 </head>
 <body>
+    <!-- پیام bn (مخفی) -->
+    <div class="bn-overlay" id="bnOverlay">
+        <div class="bn-content">
+            <h2 class="bn-title">پیام مهم</h2>
+            <div class="bn-message">
+                <p>به سایت بازی خوش آمدید! این پیام فقط یک بار نمایش داده می‌شود.</p>
+                <p>پس از بستن این پیام، دیگر هرگز نمایش داده نخواهد شد.</p>
+                <p>از حضور شما سپاسگزاریم و امیدواریم از بازی لذت ببرید.</p>
+            </div>
+            <button class="bn-close-btn" onclick="closeBnMessage()">
+                متوجه شدم
+            </button>
+        </div>
+    </div>
+    
+    <!-- صفحه حمایت مالی -->
+    <div class="page-overlay" id="donatePage">
+        <div class="page-content">
+            <h2 class="page-title">حمایت مالی داوطلبانه</h2>
+            <div class="page-message">
+                <p>با سلام و احترام،</p>
+                <p>از اینکه بازی ما را انتخاب کرده‌اید صمیمانه سپاسگزاریم. این پروژه حاصل ساعت‌ها تلاش و Passion تیم توسعه است.</p>
+                <p>حمایت‌های مالی داوطلبانه شما به ما انگیزه و امکان می‌دهد تا:</p>
+                <p>• بازی را به طور مستمر به‌روزرسانی کنیم</p>
+                <p>• امکانات جدید اضافه کنیم</p>
+                <p>• سرورهای بهتر تهیه کنیم</p>
+                <p>• باگ‌ها را سریع‌تر رفع کنیم</p>
+                <p>هر مقدار حمایت، حتی کوچک، برای ما ارزشمند است و قدردان لطف شما خواهیم بود.</p>
+                <p>شماره کارت برای حمایت مالی:</p>
+            </div>
+            <div class="card-number" onclick="copyCardNumber()" title="کلیک برای کپی">
+                ۵۸۹۲ - ۱۰۱۱ - ۸۷۳۲ - ۲۷۷۷
+            </div>
+            <p style="color: #b0b0d0; margin-bottom: 1.5rem; font-size: 0.9rem;">کلیک کنید تا شماره کارت کپی شود</p>
+            <button class="copy-btn" onclick="copyCardNumber()">
+                <i class="fas fa-copy"></i>
+                کپی شماره کارت
+            </button>
+            <button class="close-btn" onclick="closePage('donatePage')">
+                بستن
+            </button>
+        </div>
+    </div>
+    
+    <!-- صفحه پشتیبانی -->
+    <div class="page-overlay" id="supportPage">
+        <div class="page-content">
+            <h2 class="page-title">پشتیبانی</h2>
+            <div class="page-message">
+                <p>برای ارتباط با تیم پشتیبانی، از طریق ایمیل زیر با ما در تماس باشید:</p>
+            </div>
+            <a href="mailto:milad.yari1377m@gmail.com" class="support-email">
+                <i class="fas fa-envelope"></i>
+                milad.yari1377m@gmail.com
+            </a>
+            <p style="color: #b0b0d0; margin-bottom: 1.5rem;">کلیک کنید تا برنامه ایمیل باز شود</p>
+            <button class="copy-btn" onclick="copyEmail()">
+                <i class="fas fa-copy"></i>
+                کپی آدرس ایمیل
+            </button>
+            <button class="close-btn" onclick="closePage('supportPage')">
+                بستن
+            </button>
+        </div>
+    </div>
+    
     <!-- لودینگ -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
@@ -326,39 +572,17 @@
     </nav>
 
     <script>
-        // تابع شروع بازی
-        function startGame() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const progressBar = document.getElementById('progressBar');
-            
-            // نمایش لودینگ
-            loadingOverlay.style.display = 'flex';
-            
-            // ریست کردن پیشرفت
-            progressBar.style.width = '0%';
-            
-            // شروع انیمیشن پیشرفت
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 100);
-            
-            // پس از ۳ ثانیه، بازی را باز کن
-            setTimeout(() => {
-                window.open('m.html', '_self');
-            }, 3000);
-        }
-        
-        // تابع باز کردن صفحات
-        function openPage(page) {
-            if (page === 'support') {
-                window.open('m.html', '_self');
-            } else if (page === 'donate') {
-                window.open('m.html', '_self');
-            }
-        }
-        
-        // انیمیشن ورود
+        // بررسی نمایش پیام bn
         document.addEventListener('DOMContentLoaded', function() {
+            const bnShown = localStorage.getItem('bnShown');
+            
+            if (!bnShown) {
+                setTimeout(() => {
+                    document.getElementById('bnOverlay').style.display = 'flex';
+                }, 1000);
+            }
+            
+            // انیمیشن ورود عناصر اصلی
             const elements = document.querySelectorAll('.game-title, .game-subtitle, .start-btn');
             elements.forEach((element, index) => {
                 element.style.opacity = '0';
@@ -370,6 +594,84 @@
                     element.style.transform = 'translateY(0)';
                 }, index * 200);
             });
+        });
+        
+        // بستن پیام bn
+        function closeBnMessage() {
+            document.getElementById('bnOverlay').style.display = 'none';
+            localStorage.setItem('bnShown', 'true');
+        }
+        
+        // تابع شروع بازی
+        function startGame() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const progressBar = document.getElementById('progressBar');
+            
+            loadingOverlay.style.display = 'flex';
+            progressBar.style.width = '0%';
+            
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+            }, 100);
+            
+            setTimeout(() => {
+                window.location.href = 'm.html';
+            }, 3000);
+        }
+        
+        // توابع مدیریت صفحات
+        function openPage(page) {
+            if (page === 'support') {
+                document.getElementById('supportPage').style.display = 'flex';
+            } else if (page === 'donate') {
+                document.getElementById('donatePage').style.display = 'flex';
+            }
+        }
+        
+        function closePage(pageId) {
+            document.getElementById(pageId).style.display = 'none';
+        }
+        
+        // کپی شماره کارت
+        function copyCardNumber() {
+            const cardNumber = '5892101187322777';
+            navigator.clipboard.writeText(cardNumber).then(() => {
+                alert('شماره کارت با موفقیت کپی شد: ' + cardNumber);
+            }).catch(() => {
+                // Fallback برای مرورگرهای قدیمی
+                const tempInput = document.createElement('input');
+                tempInput.value = cardNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('شماره کارت کپی شد: ' + cardNumber);
+            });
+        }
+        
+        // کپی ایمیل
+        function copyEmail() {
+            const email = 'milad.yari1377m@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                alert('آدرس ایمیل کپی شد: ' + email);
+            }).catch(() => {
+                const tempInput = document.createElement('input');
+                tempInput.value = email;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('آدرس ایمیل کپی شد: ' + email);
+            });
+        }
+        
+        // بستن صفحات با کلید ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePage('supportPage');
+                closePage('donatePage');
+                closeBnMessage();
+            }
         });
     </script>
 </body>
