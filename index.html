@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلامت بدن</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e91e63;
+            --secondary: #9c27b0;
+            --accent: #ff9800;
+            --light: #fce4ec;
+            --dark: #880e4f;
+            --success: #4caf50;
+            --warning: #ffeb3b;
+            --danger: #f44336;
+            --info: #2196f3;
+            --border-radius: 20px;
+            --box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3f2fd 100%);
+            color: #333;
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-left: 12px;
+            font-size: 1.6rem;
+        }
+
+        /* Navigation Styles */
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            background: linear-gradient(to bottom, #e1f5fe, #f3e5f5);
+            flex: 1;
+            margin: 0 5px;
+            max-width: 70px;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 20px 0;
+            min-height: calc(100vh - 160px);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px 20px;
+            margin: 15px 0;
+            transition: var(--transition);
+            background: linear-gradient(to bottom right, white, #f3e5f5);
+            border: 2px solid #e91e6333;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Health Grid Styles */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            padding: 0 10px;
+        }
+        
+        .health-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px 15px;
+            text-align: center;
+            transition: var(--transition);
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            cursor: pointer;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #4caf5055;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .health-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--success), var(--info));
+        }
+        
+        .health-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .health-card i {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+        
+        .health-card:hover i {
+            transform: scale(1.2);
+        }
+        
+        .health-card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        /* Loading Styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+        }
+
+        .loading-spinner {
+            width: 70px;
+            height: 70px;
+            border: 6px solid rgba(233, 30, 99, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Welcome Text */
+        .welcome-text {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .health-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin: 15px 0;
+                padding: 0 5px;
+            }
+            
+            .health-card {
+                min-height: 120px;
+                padding: 20px 12px;
+            }
+            
+            .health-card i {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+            
+            .health-card-title {
+                font-size: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo i {
+                font-size: 1.4rem;
+            }
+            
+            .card {
+                padding: 20px 15px;
+                margin: 10px 0;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            
+            .welcome-text {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+            
+            .nav-item {
+                padding: 6px 8px;
+                font-size: 0.7rem;
+                margin: 0 3px;
+            }
+            
+            .nav-item i {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .health-grid {
+                gap: 10px;
+            }
+            
+            .health-card {
+                min-height: 110px;
+                padding: 18px 10px;
+            }
+            
+            .health-card i {
+                font-size: 1.6rem;
+            }
+            
+            .health-card-title {
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+        }
+
+        /* Special styles for very small screens */
+        @media (max-width: 360px) {
+            .health-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .health-card {
+                min-height: 100px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">در حال بارگذاری...</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span>سلامت بدن</span>
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <a href="bn.html" style="color: white; font-size: 1.3rem;">
+                    <i class="fas fa-bell"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Health Section -->
+        <section id="health" class="section active">
+            <div class="card">
+                <h2 class="card-title">سلامت اعضای بدن</h2>
+                <p class="welcome-text">برای مشاهده اطلاعات دقیق هر بخش، روی آن کلیک کنید. اطلاعات تخصصی درباره سلامت هر عضو در دسترس شما قرار می‌گیرد.</p>
+                
+                <div class="health-grid">
+                    <div class="health-card" data-page="bn1.html">
+                        <i class="fas fa-heart"></i>
+                        <div class="health-card-title">سلامت قلب</div>
+                    </div>
+                    <div class="health-card" data-page="bn2.html">
+                        <i class="fas fa-stomach"></i>
+                        <div class="health-card-title">سلامت معده</div>
+                    </div>
+                    <div class="health-card" data-page="bn3.html">
+                        <i class="fas fa-lungs"></i>
+                        <div class="health-card-title">سلامت ریه</div>
+                    </div>
+                    <div class="health-card" data-page="bn4.html">
+                        <i class="fas fa-leaf"></i>
+                        <div class="health-card-title">سلامت کبد</div>
+                    </div>
+                    <div class="health-card" data-page="bn5.html">
+                        <i class="fas fa-weight"></i>
+                        <div class="health-card-title">سلامت چربی</div>
+                    </div>
+                    <div class="health-card" data-page="bn6.html">
+                        <i class="fas fa-tint"></i>
+                        <div class="health-card-title">سلامت قند</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav-bottom">
+        <a href="m1.html" class="nav-item">
+            <i class="fas fa-tshirt"></i>
+            <span>پوشاک</span>
+        </a>
+        <a href="m2.html" class="nav-item">
+            <i class="fas fa-calculator"></i>
+            <span>حسابداری</span>
+        </a>
+        <a href="m3.html" class="nav-item">
+            <i class="fas fa-leaf"></i>
+            <span>طبع</span>
+        </a>
+        <a href="m4.html" class="nav-item">
+            <i class="fas fa-crystal-ball"></i>
+            <span>فال</span>
+        </a>
+        <a href="m5.html" class="nav-item">
+            <i class="fas fa-utensils"></i>
+            <span>آشپزی</span>
+        </a>
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading overlay
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            // Hide loading after 2 seconds
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 2000);
+            
+            // Navigation items
+            const navItems = document.querySelectorAll('.nav-item');
+            const healthCards = document.querySelectorAll('.health-card');
+            
+            // Health card click event
+            healthCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    
+                    // Show loading
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // Redirect after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = page;
+                    }, 1500);
+                });
+            });
+            
+            // Navigation click event - show loading and redirect
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    // Show loading
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // Redirect after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 1500);
+                });
+            });
+
+            // Add touch feedback for mobile
+            healthCards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
